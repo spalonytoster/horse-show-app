@@ -1,0 +1,30 @@
+<md-toolbar layout="row">
+  <md-button class="menu" hide-gt-sm ng-click="toggleSidebar()" aria-label="Show Tournament List">
+    <md-icon md-svg-icon="menu"></md-icon>
+  </md-button>
+  <h2>{{ selected.name }} - {{ selected.location }}<span ng-show="selected.liveNow"> - Live Now!</span></h2>
+</md-toolbar>
+
+<div flex layout="row">
+  <md-sidenav md-is-locked-open="$mdMedia('gt-sm')" md-component-id="sidebar" class="md-whiteframe-z2">
+    <md-toolbar>
+      <h4>Tournaments</h4>
+    </md-toolbar>
+    <md-list>
+      <md-list-item ng-repeat="tournament in tournaments">
+        <md-button ng-click="setSelected(tournament)" ng-class="{'selected' : tournament === selected }">
+          <div class="tournament-info">
+            <div ng-show="tournament.liveNow">Live Now!</div>
+            <div>{{ tournament.name }}</div>
+            <div>{{ tournament.location }}</div>
+          </div>
+        </md-button>
+      </md-list-item>
+    </md-list>
+  </md-sidenav>
+
+  <md-content flex id="content">
+      <h2>{{ selected.name }} - {{ selected.location }}</h2>
+      <p>{{ selected.scoreTable.value }}</p>
+  </md-content>
+</div>

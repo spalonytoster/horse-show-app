@@ -1,4 +1,4 @@
 var app = angular.module('app', [
-  // 'ngRoute',
+  'ngRoute',
   'ngMaterial'
 ]);

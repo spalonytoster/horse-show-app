@@ -1,4 +1,5 @@
-var router = require('express').Router();
+var router = require('express').Router(),
+    moment = require('moment');
     // Tournament = require('../../models/tournament');
 
 router.get('/', function (req, res, next) {
@@ -10,29 +11,32 @@ router.get('/', function (req, res, next) {
     {
       name: '#1 Grand Prix',
       location: 'Amsterdam',
-      date: new Date(),
+      date: moment(),
       scoreTable: {
         value: "test1"
-      }
+      },
+      liveNow: true
     },
     {
       name: 'Mid-season Junior Open',
       location: 'London',
-      date: new Date(),
+      date: moment().subtract(4, 'days'),
       scoreTable: {
         value: "test2"
-      }
+      },
+      liveNow: false
     },
     {
       name: 'Horses for charity!',
       location: 'Amsterdam',
-      date: new Date(),
+      date: moment().subtract(10, 'days'),
       scoreTable: {
         value: "test3"
-      }
+      },
+      liveNow: false
     }
   ];
-  res.jsonp(tournaments);
+  res.json(tournaments);
 });
 
 router.post('/', function (req, res, next) {
