@@ -10,8 +10,20 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "app-root-path": "^1.0.0",
     "body-parser": "^1.15.1",
     "express": "^4.13.4",
+    "mongoose": "^4.4.15",
     "serve-static": "^1.10.2"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-ng-annotate": "^2.0.0",
+    "gulp-nodemon": "^2.0.6",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-stylus": "^2.3.1",
+    "gulp-uglify": "^1.5.3"
   }
 }

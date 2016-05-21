@@ -7,14 +7,14 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
 
     <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
-    <link href="../bower_components/angular-material/angular-material.css" rel="stylesheet" />
-    <link rel="stylesheet" href="assets/app.css"/>
+    <link href="/angular-material/angular-material.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/app.css"/>
   </head>
-  <body ng-app="app" ng-controller="ScoreTableCtrl" layout="column" ng-cloak>
+  <body ng-app="app" ng-controller="ViewerCtrl" layout="column" ng-cloak>
 
     <md-toolbar layout="row">
       <md-button class="menu" hide-gt-sm ng-click="toggleSidebar()" aria-label="Show Tournament List">
-        <md-icon md-svg-icon="menu" ></md-icon>
+        <md-icon md-svg-icon="menu"></md-icon>
       </md-button>
       <h1>{{ selected.name }} - {{ selected.location }}</h1>
     </md-toolbar>
@@ -22,6 +22,9 @@
     <div flex layout="row">
 
       <md-sidenav md-is-locked-open="$mdMedia('gt-sm')" md-component-id="sidebar" class="md-whiteframe-z2">
+        <md-toolbar>
+          <h4>Tournaments</h4>
+        </md-toolbar>
         <md-list>
           <md-list-item ng-repeat="tournament in tournaments">
             <md-button ng-click="setSelected(tournament)" ng-class="{'selected' : tournament === selected }">
@@ -41,12 +44,12 @@
 
 
     <!-- Scripts -->
-    <script src="../bower_components/angular/angular.js" type="text/javascript" ></script>
-    <script src="../bower_components/angular-animate/angular-animate.js" type="text/javascript" ></script>
-    <script src="../bower_components/angular-aria/angular-aria.js" type="text/javascript" ></script>
-    <script src="../bower_components/angular-material/angular-material.js" type="text/javascript" ></script>
+    <script src="/angular/angular.js" type="text/javascript" ></script>
+    <script src="/angular-animate/angular-animate.js" type="text/javascript" ></script>
+    <script src="/angular-aria/angular-aria.js" type="text/javascript" ></script>
+    <script src="/angular-material/angular-material.js" type="text/javascript" ></script>
 
-    <script src="../ng/app.js"></script>
+    <script src="/js/app.js"></script>
 
   </body>
 </html>
