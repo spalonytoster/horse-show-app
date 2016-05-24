@@ -24,7 +24,28 @@
   </md-sidenav>
 
   <md-content flex id="content">
-      <h2>{{ selected.name }} - {{ selected.location }}</h2>
-      <p>{{ selected.scoreTable.value }}</p>
+    <md-content>
+      <md-tabs md-dynamic-height md-border-bottom>
+        <md-tab label="current voting">
+          <md-content class="md-padding">
+            <h1 class="md-display-2">Tab One</h1>
+            <h2>{{ selected.name }} - {{ selected.location }}</h2>
+            <p>{{ selected.scoreTable.value }}</p>
+          </md-content>
+        </md-tab>
+        <md-tab label="score table">
+          <md-content class="md-padding">
+            <md-input-container>
+              <label>Group</label>
+              <md-select ng-model="currentGroup">
+                <md-option>Group A</md-option>
+              </md-select>
+            </md-input-container>
+            <!-- inject view-table -->
+            <view-table></view-table>
+          </md-content>
+        </md-tab>
+      </md-tabs>
+    </md-content>
   </md-content>
 </div>
