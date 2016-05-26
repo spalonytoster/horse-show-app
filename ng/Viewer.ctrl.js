@@ -1,11 +1,11 @@
-app.controller('ViewerCtrl', function ($scope, $mdSidenav, TournamentSvc) {
-  TournamentSvc.getTournaments().success(function (tournaments) {
-    $scope.tournaments = tournaments;
-    $scope.selected = $scope.tournaments[0];
+app.controller('ViewerCtrl', function ($scope, $mdSidenav, ContestsSvc) {
+  ContestsSvc.getAll().success(function (contests) {
+    $scope.contests = contests;
+    $scope.selected = $scope.contests[0];
   });
 
-  $scope.setSelected = function (tournament) {
-    $scope.selected = tournament;
+  $scope.setSelected = function (contest) {
+    $scope.selected = contest;
   };
 
   $scope.toggleSidebar = function () {

@@ -16,7 +16,9 @@ app.use(serveStatic('bower_components'));
 // app.use(require('./auth'));
 
 // REST api
-app.use('/api/tournaments', require('./controllers/api/tournaments'));
+app.use('/api/persons', require('./controllers/api/persons'));
+app.use('/api/horses', require('./controllers/api/horses'));
+app.use('/api/contests', require('./controllers/api/contests'));
 app.use('/', require('./controllers/static'));
 
 app.listen(3000, function () {

@@ -1,0 +1,22 @@
+var db = require('../db'),
+    personSchema = require('./person.js').schema;
+
+var horseSchema = db.Schema({
+  name: { type: String, required: true },
+  sex: {
+    type: String,
+    required: true,
+    validate: {
+      validator: function (v) {
+        return /stallion|mare/.test(v);
+      },
+      message: '{VALUE} is not a valid sex. Must be either stallion or mare.'
+    }
+  },
+  breeder: personSchema
+});
+
+module.exports = {
+  schema: horseSchema,
+  model: db.model('Horse', horseSchema)
+};

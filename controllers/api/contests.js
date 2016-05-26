@@ -7,7 +7,7 @@ router.get('/', function (req, res, next) {
   //   if (err) { return next(err); }
   //   res.json(posts);
   // });
-  var tournaments = [
+  var contests = [
     {
       name: '#1 Grand Prix',
       location: 'Amsterdam',
@@ -15,7 +15,7 @@ router.get('/', function (req, res, next) {
       scoreTable: {
         value: "test1"
       },
-      liveNow: true
+      liveNow: false
     },
     {
       name: 'Mid-season Junior Open',
@@ -36,7 +36,7 @@ router.get('/', function (req, res, next) {
       liveNow: false
     }
   ];
-  res.json(tournaments);
+  res.json(contests);
 });
 
 router.post('/', function (req, res, next) {

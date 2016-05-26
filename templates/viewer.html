@@ -11,12 +11,12 @@
       <h4>Tournaments</h4>
     </md-toolbar>
     <md-list>
-      <md-list-item ng-repeat="tournament in tournaments">
-        <md-button ng-click="setSelected(tournament)" ng-class="{'selected' : tournament === selected }">
+      <md-list-item ng-repeat="contest in contests">
+        <md-button ng-click="setSelected(contest)" ng-class="{'selected' : contest === selected }">
           <div class="tournament-info">
-            <div ng-show="tournament.liveNow">Live Now!</div>
-            <div>{{ tournament.name }}</div>
-            <div>{{ tournament.location }}</div>
+            <div ng-show="contest.liveNow">Live Now!</div>
+            <div>{{ contest.name }}</div>
+            <div>{{ contest.location }}</div>
           </div>
         </md-button>
       </md-list-item>
