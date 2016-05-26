@@ -4,7 +4,16 @@
   app.directive('viewTable', function () {
     return {
       restrict: 'E',
-      templateUrl: 'view-table.html'
+      templateUrl: 'view-table.html',
+      scope: {
+        name: '=',
+        data: '='
+      },
+      controller: function ($scope) {
+        $scope.headers = $scope.data.headers;
+        $scope.content = $scope.data.content;
+        $scope.sortable = $scope.data.sortable;
+      }
     };
   });
 
@@ -18,7 +27,8 @@
         filters: '=',
         customClass: '=customClass',
         thumbs:'=',
-        count: '='
+        count: '=',
+        name: '='
       },
       controller: function ($scope,$filter,$window) {
         $scope.toggleSearch = false;
