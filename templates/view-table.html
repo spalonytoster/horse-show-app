@@ -46,7 +46,7 @@
   text-align: left;
   font-size: 0.75em;
   font-weight: 700;
-  padding: 16px 16px 16px 0;
+  <!-- padding: 16px 16px 16px 0; -->
   }
 
   .md-table-header a{
@@ -120,9 +120,21 @@
   }
 </style>
 
+<!-- <md-toolbar layout="column" class="md-tall"><span flex="flex"></span>
+  <div class="md-toolbar-tools">
+    <div layout="row" flex="flex" class="fill-height">
+      <div ng-hide="toggleSearch" class="md-toolbar-item md-breadcrumb"><span ng-click="toggleSearch = !toggleSearch">Angular Material Table</span></div><span flex="flex" ng-hide="toggleSearch"></span>
+      <md-input-container flex="flex" style="padding-left:88px;" ng-show="toggleSearch">
+        <input type="text" ng-model="search"/>
+      </md-input-container>
+      <div layout="row" class="md-toolbar-item md-tools"><a href="#" ng-click="toggleSearch = !toggleSearch" class="md-button md-default-theme"><i class="ion-android-search"></i></a></div>
+    </div>
+  </div>
+</md-toolbar> -->
+
 <div layout="column">
   <md-content layout="column" flex="flex" ng-click="toggleSearch=false">
-    <md-table headers="headers" content="content" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" count="count"></md-table>
+    <md-table name="name" headers="headers" content="content" sortable="sortable" filters="search" custom-class="custom" thumbs="thumbs" count="count"></md-table>
   </md-content>
 
   <!-- md-table jade template-->

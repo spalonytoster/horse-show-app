@@ -28,7 +28,6 @@
       <md-tabs md-dynamic-height md-border-bottom>
         <md-tab label="current voting">
           <md-content class="md-padding">
-            <h1 class="md-display-2">Tab One</h1>
             <h2>{{ selected.name }} - {{ selected.location }}</h2>
             <p>{{ selected.scoreTable.value }}</p>
           </md-content>
@@ -39,10 +38,14 @@
               <label>Group</label>
               <md-select ng-model="currentGroup">
                 <md-option>Group A</md-option>
+                <md-option>Group B</md-option>
+                <md-option>Group C</md-option>
+                <md-option>Group D</md-option>
+                <md-option>Group E</md-option>
               </md-select>
             </md-input-container>
             <!-- inject view-table -->
-            <view-table></view-table>
+            <view-table id="contestants-table" ng-init="name='scoreTable'"></view-table>
           </md-content>
         </md-tab>
       </md-tabs>
