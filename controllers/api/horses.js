@@ -1,9 +1,12 @@
 var router = require('express').Router(),
     moment = require('moment'),
-    Horse = require('../../models/horse').model;
+    Horse = require('../../models/horse').model,
+    Person = require('../../models/person').model;
 
 router.get('/', function (req, res, next) {
-  Horse.find(function (err, horses) {
+  Horse.find()
+  .populate('breeder')
+  .exec(function (err, horses) {
     if (err) { return next(err); }
     res.json(horses);
   });

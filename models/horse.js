@@ -1,5 +1,4 @@
-var db = require('../db'),
-    personSchema = require('./person.js').schema;
+var db = require('../db');
 
 var horseSchema = db.Schema({
   name: { type: String, required: true },
@@ -13,7 +12,7 @@ var horseSchema = db.Schema({
       message: '{VALUE} is not a valid sex. Must be either stallion or mare.'
     }
   },
-  breeder: personSchema
+  breeder: { type: db.Schema.ObjectId, ref: 'Person' }
 });
 
 module.exports = {
