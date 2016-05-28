@@ -37,11 +37,7 @@
             <md-input-container>
               <label>Group</label>
               <md-select ng-model="currentGroup">
-                <md-option>Group A</md-option>
-                <md-option>Group B</md-option>
-                <md-option>Group C</md-option>
-                <md-option>Group D</md-option>
-                <md-option>Group E</md-option>
+                <md-option ng-repeat="group in selected.groups">{{group.name}}</md-option>
               </md-select>
             </md-input-container>
             <!-- inject view-table -->

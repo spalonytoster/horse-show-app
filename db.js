@@ -1,6 +1,7 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+    dbName = require('./config').dbName;
 
-mongoose.connect('mongodb://localhost/horse-show', function () {
+mongoose.connect('mongodb://localhost/' + dbName, function () {
   console.log('Nazwiązano połączenie z mongodb.');
 });
 

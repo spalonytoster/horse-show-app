@@ -1,58 +1,67 @@
 var router = require('express').Router(),
-    moment = require('moment');
-    // Tournament = require('../../models/tournament');
+    moment = require('moment'),
+    Contest = require('../../models/contest'),
+    _ = require('lodash');
+
+router.get('/:nameFormatted', function (req, res, next) {
+  console.log(req.params);
+  Contest.findOne({ nameFormatted: req.params.nameFormatted }, function (err, contest) {
+    if (err) { return next(err); }
+    res.json(contest);
+  });
+});
 
 router.get('/', function (req, res, next) {
-  // Tournament.find().sort('-date').exec(function (err, posts) {
-  //   if (err) { return next(err); }
-  //   res.json(posts);
-  // });
-  var contests = [
-    {
-      name: '#1 Grand Prix',
-      location: 'Amsterdam',
-      date: moment(),
-      scoreTable: {
-        value: "test1"
-      },
-      liveNow: false
-    },
-    {
-      name: 'Mid-season Junior Open',
-      location: 'London',
-      date: moment().subtract(4, 'days'),
-      scoreTable: {
-        value: "test2"
-      },
-      liveNow: false
-    },
-    {
-      name: 'Horses for charity!',
-      location: 'Amsterdam',
-      date: moment().subtract(10, 'days'),
-      scoreTable: {
-        value: "test3"
-      },
-      liveNow: false
-    }
-  ];
-  res.json(contests);
+  Contest.find(function (err, contests) {
+    if (err) { return next(err); }
+    res.json(contests);
+  });
 });
 
 router.post('/', function (req, res, next) {
-  // var post = new Post({
-  //   body: req.body.body
-  // });
-  // if (req.auth) {
-  //   post.username = req.auth.username;
-  // }
-  // else {
-  //   res.sendStatus(401);
-  // }
-  // post.save(function (err, post) {
-  //   if (err) { return next(err); }
-  //   res.status(201).json(post);
-  // });
+  var groups = [];
+  req.body.groups.forEach(function (group) {
+    var groupToRet = {};
+    groupToRet.name = group.name;
+    groupToRet.contestants = []; groupToRet.refrees = [];
+    group.contestants.forEach(function (contestant) {
+      var contestantToRet = {};
+      contestantToRet.horse = contestant.horse;
+      contestantToRet.number = contestant.number;
+      contestantToRet.score = contestant.score;
+      groupToRet.contestants.push(contestantToRet);
+    });
+    group.refrees.forEach(function (refree) {
+      groupToRet.refrees.push(refree);
+    });
+    groups.push(groupToRet);
+  });
+
+  var contest = new Contest({
+    name: req.body.name,
+    nameFormatted: _.kebabCase(req.body.name + req.body.location.city),
+    date: req.body.date,
+    location: {
+      city: req.body.location.city,
+      country: req.body.location.country
+    },
+    format: {
+      min: req.body.format.min,
+      max: req.body.format.max,
+      halvesAllowed: req.body.format.halvesAllowed
+    },
+    groups: groups,
+  });
+
+  console.dir(contest);
+
+  contest.save(function (err, contest) {
+    if (err) {
+      console.dir(err);
+      return next(err);
+    }
+    res.status(201).json(contest);
+  });
 });
 
 module.exports = router;

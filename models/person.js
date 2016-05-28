@@ -17,7 +17,4 @@ var personSchema = db.Schema({
   surname: { type: String, required: true }
 });
 
-module.exports = {
-  schema: personSchema,
-  model: db.model('Person', personSchema)
-};
+module.exports = db.model('Person', personSchema);

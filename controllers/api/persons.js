@@ -1,7 +1,14 @@
 var router = require('express').Router(),
     moment = require('moment'),
-    Person = require('../../models/person').model,
+    Person = require('../../models/person'),
     roles = require('../../config').roles;
+
+router.get('/refrees', function (req, res, next) {
+  Person.find({ role: roles.REFREE }).sort('-date').exec(function (err, breeders) {
+    if (err) { return next(err); }
+    res.json(refrees);
+  });
+});
 
 router.get('/breeders', function (req, res, next) {
   Person.find({ role: roles.BREEDER }).sort('-date').exec(function (err, breeders) {

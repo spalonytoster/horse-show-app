@@ -15,7 +15,4 @@ var horseSchema = db.Schema({
   breeder: { type: db.Schema.ObjectId, ref: 'Person' }
 });
 
-module.exports = {
-  schema: horseSchema,
-  model: db.model('Horse', horseSchema)
-};
+module.exports = db.model('Horse', horseSchema);

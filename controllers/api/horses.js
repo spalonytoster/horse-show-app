@@ -1,7 +1,7 @@
 var router = require('express').Router(),
     moment = require('moment'),
-    Horse = require('../../models/horse').model,
-    Person = require('../../models/person').model;
+    Horse = require('../../models/horse'),
+    Person = require('../../models/person');
 
 router.get('/', function (req, res, next) {
   Horse.find()
