@@ -17,6 +17,13 @@ router.get('/breeders', function (req, res, next) {
   });
 });
 
+router.get('/:id', function (req, res, next) {
+  Person.findOne({ _id: req.params.id }, function (err, person) {
+    if (err) { return next(err); }
+    res.json(person);
+  });
+});
+
 router.post('/', function (req, res, next) {
   var person = new Person({
     username: req.body.username,

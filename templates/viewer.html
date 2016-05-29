@@ -36,7 +36,7 @@
           <md-content class="md-padding">
             <md-input-container>
               <label>Group</label>
-              <md-select ng-model="currentGroup">
+              <md-select ng-model="selectedGroup" ng-change="changeGroup(selectedGroup)">
                 <md-option ng-repeat="group in selected.groups">{{group.name}}</md-option>
               </md-select>
             </md-input-container>
