@@ -4,7 +4,7 @@ var router = require('express').Router(),
     roles = require('../../config').roles;
 
 router.get('/refrees', function (req, res, next) {
-  Person.find({ role: roles.REFREE }).sort('-date').exec(function (err, breeders) {
+  Person.find({ role: roles.REFREE }).sort('-date').exec(function (err, refrees) {
     if (err) { return next(err); }
     res.json(refrees);
   });
