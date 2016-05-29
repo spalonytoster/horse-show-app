@@ -2,7 +2,7 @@
   <md-button class="menu" hide-gt-sm ng-click="toggleSidebar()" aria-label="Show Tournament List">
     <md-icon md-svg-icon="menu"></md-icon>
   </md-button>
-  <h2>{{ selected.name }} - {{ selected.location }}<span ng-show="selected.liveNow"> - Live Now!</span></h2>
+  <h2 ng-cloak>{{ selected.name }} @{{ selected.location.city }}<span ng-show="selected.liveNow"> - Live Now!</span></h2>
 </md-toolbar>
 
 <div flex layout="row">
@@ -16,7 +16,7 @@
           <div class="tournament-info">
             <div ng-show="contest.liveNow">Live Now!</div>
             <div>{{ contest.name }}</div>
-            <div>{{ contest.location }}</div>
+            <div>{{ contest.location.city }} {{ getMomentDate(contest.date) }}</div>
           </div>
         </md-button>
       </md-list-item>
@@ -28,7 +28,7 @@
       <md-tabs md-dynamic-height md-border-bottom>
         <md-tab label="current voting">
           <md-content class="md-padding">
-            <h2>{{ selected.name }} - {{ selected.location }}</h2>
+            <h2>{{ selected.name }}</h2>
             <p>{{ selected.scoreTable.value }}</p>
           </md-content>
         </md-tab>

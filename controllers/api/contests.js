@@ -6,7 +6,8 @@ var router = require('express').Router(),
 router.get('/:nameFormatted', function (req, res, next) {
   console.log(req.params);
   Contest.findOne({ nameFormatted: req.params.nameFormatted })
-  .populate('groups.contests.horse')
+  .populate('groups.contestants.horse')
+  .populate('groups.contestants.horse.breeder')
   .populate('groups.refrees')
   .exec(function (err, contest) {
     if (err) { return next(err); }
@@ -16,7 +17,8 @@ router.get('/:nameFormatted', function (req, res, next) {
 
 router.get('/', function (req, res, next) {
   Contest.find()
-  .populate('groups.contests.horse')
+  .populate('groups.contestants.horse')
+  .populate('groups.contestants.horse.breeder')
   .populate('groups.refrees')
   .exec(function (err, contests) {
     if (err) { return next(err); }

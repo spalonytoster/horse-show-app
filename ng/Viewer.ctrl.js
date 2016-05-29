@@ -12,6 +12,10 @@ app.controller('ViewerCtrl', function ($scope, $mdSidenav, ContestsSvc) {
     $mdSidenav('sidebar').toggle();
   };
 
+  $scope.getMomentDate = function (date) {
+    return moment(date).calendar();
+  };
+
   $scope.scoreTable = {
     headers: [
       {

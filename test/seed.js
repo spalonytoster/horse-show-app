@@ -157,8 +157,6 @@ async.series([
     },
     function(callback) {
       var counter = 0;
-      var city = faker.address.city();
-      var name = '#' + Math.floor(Math.random() * 50) + ' Horse Show @' + city;
       var randomFormat = function () {
         var i = Math.floor((Math.random() * 20) + 1);
         if (i%10 === 0) {
@@ -167,9 +165,16 @@ async.series([
         return randomFormat();
       };
       for (let i = 0; i < CONTESTS; i++) {
+        var city = faker.address.city();
+        var name = '#' + Math.floor(Math.random() * 50) + ' Horse Show';
         var localGroups = [];
         for (let j = 0; j < GROUPS/CONTESTS; j++) {
-          localGroups.push(groups[j*i]);
+          if (i === 0) {
+            localGroups.push(groups[j]);
+          }
+          else {
+            localGroups.push(groups[j*i]);
+          }
         }
         new Contest({
           name: name,
@@ -193,7 +198,7 @@ async.series([
       setInterval(function () {
         if (counter === CONTESTS) {
           clearInterval(this);
-          console.log('created ' + CONTESTS + ' groups');
+          console.log('created ' + CONTESTS + ' contests');
           callback(null, 'contests');
         }
       }, 20);
