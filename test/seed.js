@@ -202,4 +202,5 @@ async.series([
 function(err, results) {
   if (err) { throw err; }
     console.log(results);
+    console.log('Database seeded sucessfully.\nPress Ctrl-C to exit...');
 });
