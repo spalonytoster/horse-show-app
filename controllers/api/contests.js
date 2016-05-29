@@ -5,14 +5,20 @@ var router = require('express').Router(),
 
 router.get('/:nameFormatted', function (req, res, next) {
   console.log(req.params);
-  Contest.findOne({ nameFormatted: req.params.nameFormatted }, function (err, contest) {
+  Contest.findOne({ nameFormatted: req.params.nameFormatted })
+  .populate('groups.contests.horse')
+  .populate('groups.refrees')
+  .exec(function (err, contest) {
     if (err) { return next(err); }
     res.json(contest);
   });
 });
 
 router.get('/', function (req, res, next) {
-  Contest.find(function (err, contests) {
+  Contest.find()
+  .populate('groups.contests.horse')
+  .populate('groups.refrees')
+  .exec(function (err, contests) {
     if (err) { return next(err); }
     res.json(contests);
   });
@@ -39,7 +45,7 @@ router.post('/', function (req, res, next) {
 
   var contest = new Contest({
     name: req.body.name,
-    nameFormatted: _.kebabCase(req.body.name + req.body.location.city),
+    nameFormatted: _.kebabCase(req.body.name),
     date: req.body.date,
     location: {
       city: req.body.location.city,
