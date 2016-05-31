@@ -142,7 +142,7 @@ async.series([
             horse: {
               _id: horses.random()._id
             },
-            number: Math.floor(Math.random() * (GROUPS * HORSES_PER_GROUP)),
+            number: Math.floor(Math.random() * (GROUPS * HORSES_PER_GROUP) + 1),
             score: Math.floor((Math.random() * 8) + 2)
           });
         }
@@ -151,6 +151,7 @@ async.series([
             _id: refrees.random()._id
           });
         }
+        console.log(group.contestants[0].horse._id);
         groups.push(group);
       }
       callback(null, 'groups');
@@ -169,16 +170,11 @@ async.series([
         var name = '#' + Math.floor(Math.random() * 50) + ' Horse Show';
         var localGroups = [];
         for (let j = 0; j < GROUPS/CONTESTS; j++) {
-          if (i === 0) {
-            localGroups.push(groups[j]);
-          }
-          else {
-            localGroups.push(groups[j*i]);
-          }
+          localGroups.push(groups[i * (GROUPS/CONTESTS) + j]);
         }
         new Contest({
           name: name,
-          nameFormatted: _.kebabCase(name),
+          nameFormatted: _.kebabCase(name + ' ' + city),
           date: faker.date.past(),
           location: {
             city: city,
