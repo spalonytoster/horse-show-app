@@ -7,6 +7,12 @@ app.controller('ViewerCtrl', function ($scope, $mdSidenav, ContestsSvc, PersonsS
     console.log($scope.selected);
   };
 
+  $scope.query = {
+    order: 'name',
+    limit: 5,
+    page: 1
+  };
+
   $scope.toggleSidebar = function () {
     $mdSidenav('sidebar').toggle();
   };
