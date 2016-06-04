@@ -15,11 +15,11 @@
   </head>
   <body ng-app="app" ng-controller="ApplicationCtrl" layout="column" ng-cloak>
 
-    <div ng-if="currentUser" layout="row" layout-padding class="bg-dark-blue nav-dark" layout-align="space-between center">
+    <div class="navbar" ng-if="currentUser" layout="row" layout-padding layout-align="space-between center">
       <div>
-        Zalogowany jako <span>{{ currentUser.username }}</span>
+        Zalogowany jako <span class="bold">{{ currentUser.username }}</span>
         ({{ currentUser.name }} {{ currentUser.surname }}).
-        You are <span>{{ currentUser.role }}</span>
+        You are <span class="bold">{{ currentUser.role }}.</span>
       </div>
       <div class="nav-buttons">
         <md-button class="md-raised md-warn" ng-click="logout()">Log Out</md-button>
