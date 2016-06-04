@@ -1,14 +1,22 @@
+var http = null;
+
 app.config(function ($routeProvider, $locationProvider) {
 
-  var requireAuthentication = function () {
+  var requireAuthentication = function (role) {
     return {
       load: ['$q', '$location', function ($q, $location) {
-        var isAuthenticated = false;
         var deferred = $q.defer();
         deferred.resolve();
-        if (!isAuthenticated) {
+
+        http.get('/api/persons/user')
+        .success(function (data) {
+          if (data.role !== role) {
+            $location.path('/login');
+          }
+        })
+        .error(function () {
           $location.path('/login');
-        }
+        });
         return deferred.promise;
       }]
     };
@@ -21,9 +29,17 @@ app.config(function ($routeProvider, $locationProvider) {
     .when('/admin', {
       controller: 'AdminCtrl',
       templateUrl: 'admin.html',
-      resolve: requireAuthentication()
+      resolve: requireAuthentication('admin')
     })
-    .when('/refree', { controller: 'RefreeCtrl', templateUrl: 'refree.html' })
+    .when('/refree', {
+       controller: 'RefreeCtrl',
+       templateUrl: 'refree.html',
+       resolve: requireAuthentication('refree')
+     })
     .when('/login', { controller: 'LoginCtrl', templateUrl: 'login.html' })
     .otherwise('/');
+});
+
+app.run(function ($http) {
+  http = $http;
 });

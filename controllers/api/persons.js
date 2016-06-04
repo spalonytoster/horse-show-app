@@ -10,12 +10,12 @@ var router = require('express').Router(),
     config = require('../../config');
 
   router.get('/user/', function (req, res, next) {
-    console.log('getUser');
+    if (!req.headers['x-auth']) {
+      res.status(401).end();
+    }
     var token, auth;
     token = req.headers['x-auth'];
     auth = jwt.decode(token, config.secret);
-
-    console.log(auth);
 
     Person.findOne({ username: auth.username })
     .select('username')
