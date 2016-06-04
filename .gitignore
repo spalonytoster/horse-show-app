@@ -34,4 +34,4 @@ bower_components
 .node_repl_history
 
 assets/css/app.css
-assets/js
+assets/js/app.js

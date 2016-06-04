@@ -1,7 +1,22 @@
+/* jshint node: true */
+'use strict';
+
 var router = require('express').Router(),
     moment = require('moment'),
     Person = require('../../models/person'),
-    roles = require('../../config').roles;
+    roles = require('../../config').roles,
+    jwt = require('jwt-simple'),
+    bcrypt = require('bcrypt'),
+    config = require('../../config');
+
+// router.get('/', function (req, res) {
+//   var token, auth;
+//   token = req.headers['x-auth'];
+//   auth = jwt.decode(token, config.secret);
+//   Person.findOne({ username: auth.username }, function (err, user) {
+//     res.json(user);
+//   });
+// });
 
 router.get('/refrees', function (req, res, next) {
   Person.find({ role: roles.REFREE }).sort('-date').exec(function (err, refrees) {
@@ -27,16 +42,19 @@ router.get('/:id', function (req, res, next) {
 router.post('/', function (req, res, next) {
   var person = new Person({
     username: req.body.username,
-    password: req.body.password,
     role: req.body.role,
     name: req.body.name,
     surname: req.body.surname
   });
 
-  person.save(function (err, person) {
-    if (err) { return next(err); }
-    res.status(201).json(person);
+  bcrypt.hash(req.body.password, 10, function (err, hash) {
+    person.password = hash;
+    person.save(function (err) {
+      if (err) { throw next(err); }
+      res.sendStatus(201);
+    });
   });
+
 });
 
 module.exports = router;

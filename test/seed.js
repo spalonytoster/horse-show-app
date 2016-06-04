@@ -49,7 +49,9 @@ async.series([
         new Person({
           role: roles.BREEDER,
           name: faker.name.firstName(),
-          surname: faker.name.lastName()
+          surname: faker.name.lastName(),
+          username: faker.internet.userName(),
+          password: faker.internet.password()
         })
         .save(function (err, breeder) {
           breeders.push(breeder);
@@ -70,7 +72,9 @@ async.series([
         new Person({
           role: roles.REFREE,
           name: faker.name.firstName(),
-          surname: faker.name.lastName()
+          surname: faker.name.lastName(),
+          username: faker.internet.userName(),
+          password: faker.internet.password()
         })
         .save(function (err, refree) {
           refrees.push(refree);
@@ -151,7 +155,6 @@ async.series([
             _id: refrees.random()._id
           });
         }
-        console.log(group.contestants[0].horse._id);
         groups.push(group);
       }
       callback(null, 'groups');

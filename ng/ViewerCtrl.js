@@ -13,10 +13,6 @@ app.controller('ViewerCtrl', function ($scope, $mdSidenav, ContestsSvc, PersonsS
     page: 1
   };
 
-  $scope.toggleSidebar = function () {
-    $mdSidenav('sidebar').toggle();
-  };
-
   $scope.getMomentDate = function (date) {
     return moment(date).calendar();
   };

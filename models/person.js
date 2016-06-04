@@ -1,8 +1,8 @@
 var db = require('../db');
 
 var personSchema = db.Schema({
-  username: { type: String, select: false },
-  password: { type: String, select: false },
+  username: { type: String, required: true, select: false },
+  password: { type: String, required: true, select: false },
   role: {
     type: String,
     required: true,

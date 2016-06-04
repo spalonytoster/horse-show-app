@@ -1,0 +1,29 @@
+<md-toolbar layout="row">
+  <md-button class="menu" hide-gt-sm ng-click="toggleSidebar()" aria-label="Show Actions">
+    <md-icon md-svg-icon="menu"></md-icon>
+  </md-button>
+  <h2 ng-cloak>ADMIN DASHBOARD</h2>
+</md-toolbar>
+
+<div flex layout="row">
+  <md-sidenav md-is-locked-open="$mdMedia('gt-sm')" md-component-id="sidebar" class="md-whiteframe-z2">
+    <md-toolbar>
+      <h4>Actions</h4>
+    </md-toolbar>
+    <md-list>
+      <md-list-item ng-repeat="action in actions">
+        <md-button ng-click="setSelected(actions)" ng-class="{ 'selected' : action === selected }">
+          <div class="action-info">
+            <div>{{ action.label }}</div>
+          </div>
+        </md-button>
+      </md-list-item>
+    </md-list>
+  </md-sidenav>
+
+  <md-content flex id="content">
+    <md-content>
+      <h2>hello admin</h2>
+    </md-content>
+  </md-content>
+</div>
