@@ -7,8 +7,8 @@ var Person = require('../../models/person'),
 router.post('/', function (req, res, next) {
   var token;
   Person.findOne({ username: req.body.username })
-  .select('username')
   .select('password')
+  .select('role')
   .exec(function (err, user) {
     if (err) { return next(err); }
     if (!user) { return res.sendStatus(401); }

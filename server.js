@@ -40,6 +40,7 @@ app.use(serveStatic('bower_components'));
 app.use('/api/persons', require('./controllers/api/persons'));
 app.use('/api/horses', require('./controllers/api/horses'));
 app.use('/api/contests', require('./controllers/api/contests'));
+app.use('/api/sessions', require('./controllers/api/sessions'));
 app.use('/', require('./controllers/static'));
 
 // TODO: in production listen on https instead of app

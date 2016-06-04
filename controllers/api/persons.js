@@ -9,14 +9,37 @@ var router = require('express').Router(),
     bcrypt = require('bcrypt'),
     config = require('../../config');
 
-// router.get('/', function (req, res) {
-//   var token, auth;
-//   token = req.headers['x-auth'];
-//   auth = jwt.decode(token, config.secret);
-//   Person.findOne({ username: auth.username }, function (err, user) {
-//     res.json(user);
-//   });
-// });
+  router.get('/user/', function (req, res, next) {
+    console.log('getUser');
+    var token, auth;
+    token = req.headers['x-auth'];
+    auth = jwt.decode(token, config.secret);
+
+    console.log(auth);
+
+    Person.findOne({ username: auth.username })
+    .select('username')
+    .select('role')
+    .select('name')
+    .select('surname')
+    .exec(function (err, user) {
+      if (err) { return next(err); }
+      res.json(user);
+    });
+  });
+
+  router.get('/:username', function (req, res, next) {
+    Person.findOne({ username: req.params.username })
+    .select('username')
+    .select('password')
+    .select('role')
+    .select('name')
+    .select('surname')
+    .exec(function (err, person) {
+      if (err) { return next(err); }
+      res.json(person);
+    });
+  });
 
 router.get('/refrees', function (req, res, next) {
   Person.find({ role: roles.REFREE }).sort('-date').exec(function (err, refrees) {

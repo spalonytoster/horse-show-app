@@ -4,25 +4,36 @@
     <meta charset="utf-8">
     <title>Horse Show App</title>
 
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no"/>
 
     <link href="/css/roboto.css" rel="stylesheet">
-    <link href="/angular-material/angular-material.css" rel="stylesheet" />
+    <link href="/angular-material/angular-material.css" rel="stylesheet"/>
     <link href="/angular-material-data-table/dist/md-data-table.min.css" rel="stylesheet"/>
-    <link href="/css/app.css" rel="stylesheet" />
+    <link href="/css/app.css" rel="stylesheet"/>
 
     <base href="/">
   </head>
-  <body ng-app="app" layout="column" ng-cloak>
+  <body ng-app="app" ng-controller="ApplicationCtrl" layout="column" ng-cloak>
 
-    <div layout="column" ng-controller="ApplicationCtrl" ng-view></div>
+    <div ng-if="currentUser" layout="row" layout-padding class="bg-dark-blue nav-dark" layout-align="space-between center">
+      <div>
+        Zalogowany jako <span>{{ currentUser.username }}</span>
+        ({{ currentUser.name }} {{ currentUser.surname }}).
+        You are <span>{{ currentUser.role }}</span>
+      </div>
+      <div class="nav-buttons">
+        <md-button class="md-raised md-warn" ng-click="logout()">Log Out</md-button>
+      </div>
+    </div>
+
+    <div layout="column" ng-view></div>
 
     <!-- Scripts -->
-    <script src="/angular/angular.js" type="text/javascript" ></script>
+    <script src="/angular/angular.js" type="text/javascript"></script>
     <script src="/angular-route/angular-route.js" type="text/javascript"></script>
-    <script src="/angular-material/angular-material.js" type="text/javascript" ></script>
-    <script src="/angular-animate/angular-animate.js" type="text/javascript" ></script>
-    <script src="/angular-aria/angular-aria.js" type="text/javascript" ></script>
+    <script src="/angular-material/angular-material.js" type="text/javascript"></script>
+    <script src="/angular-animate/angular-animate.js" type="text/javascript"></script>
+    <script src="/angular-aria/angular-aria.js" type="text/javascript"></script>
     <script src="/angular-material-data-table/dist/md-data-table.min.js" type="text/javascript"></script>
 
     <script src="/moment/moment.js" type="text/javascript"></script>
