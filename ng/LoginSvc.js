@@ -5,6 +5,7 @@ app.service('LoginSvc', function ($http) {
   svc.getUser = function () {
     return $http.get('/api/persons/user');
   };
+
   svc.login = function (username, password, rememberMe) {
     return $http.post('/api/sessions', {
       username: username,
@@ -16,19 +17,20 @@ app.service('LoginSvc', function ($http) {
         window.localStorage.token = val.data;
         console.log('token from localStorage: ' + window.localStorage.token);
       }
-      // svc.token = val.data;
       $http.defaults.headers.common['X-auth'] = val.data;
-      console.log('got token from /sessions: ' + val.data);
       return svc.getUser();
     });
   };
+
   svc.logout = function () {
     delete $http.defaults.headers.common['X-auth'];
   };
+
   svc.createUser = function (username, password) {
     return $http.post('/api/persons', {
       username: username,
       password: password
     });
   };
+  
 });

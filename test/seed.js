@@ -141,20 +141,34 @@ async.series([
           contestants: [],
           refrees: []
         };
-        for (let j = 0; j < HORSES_PER_GROUP; j++) {
-          group.contestants.push({
-            horse: {
-              _id: horses.random()._id
-            },
-            number: Math.floor(Math.random() * (GROUPS * HORSES_PER_GROUP) + 1),
-            score: Math.floor((Math.random() * 8) + 2)
-          });
-        }
         for (let j = 0; j < REFREES_PER_GROUP; j++) {
           group.refrees.push({
             _id: refrees.random()._id
           });
         }
+        for (let j = 0; j < HORSES_PER_GROUP; j++) {
+          var scoreTypes = ['type', 'neck', 'body', 'legs', 'movement'];
+          var scores = [];
+          scoreTypes.forEach(function (scoreType) {
+            for (var k = 0; k < 5; k++) {
+              var score = {
+                scoreType: scoreType,
+                value: Math.floor((Math.random() * 8) + 2),
+                refree: refrees[k]
+              };
+              scores.push(score);
+            }
+          });
+
+          group.contestants.push({
+            horse: {
+              _id: horses.random()._id
+            },
+            number: Math.floor(Math.random() * (GROUPS * HORSES_PER_GROUP) + 1),
+            scores: scores
+          });
+        }
+
         groups.push(group);
       }
       callback(null, 'groups');

@@ -19,6 +19,7 @@ router.get('/', function (req, res, next) {
   Contest.find()
   .populate('groups.contestants.horse')
   .populate('groups.contestants.horse.breeder')
+  .populate('groups.contestants.scores.refree')
   .populate('groups.refrees')
   .exec(function (err, contests) {
     if (err) { return next(err); }

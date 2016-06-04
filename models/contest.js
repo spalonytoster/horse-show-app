@@ -1,5 +1,20 @@
 var db = require('../db');
 
+var scoreSchema = db.Schema({
+  scoreType: {
+    type: String,
+    required: true,
+    validate: {
+      validator: function (v) {
+        return /type|neck|body|legs|movement/.test(v);
+      },
+      message: '{VALUE} is not a valid role. Must be either user, admin, refree or breeder.'
+    }
+  },
+  value: { type: Number, required: true },
+  refree: { type: db.Schema.ObjectId, ref: 'Person' }
+});
+
 var contestSchema = db.Schema({
   name: { type: String, required: true },
   nameFormatted: { type: String, required: true },
@@ -18,7 +33,7 @@ var contestSchema = db.Schema({
     contestants: [{
       horse: { type: db.Schema.ObjectId, ref: 'Horse' },
       number: { type: Number, required: true },
-      score: { type: Number, required: true }
+      scores: [scoreSchema]
     }],
     refrees: [{ type: db.Schema.ObjectId, ref: 'Person' }]
   }],
