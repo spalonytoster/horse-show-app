@@ -28,12 +28,12 @@ app.config(function ($routeProvider, $locationProvider) {
     .when('/', { controller: 'ViewerCtrl', templateUrl: 'viewer.html' })
     .when('/admin', {
       controller: 'AdminCtrl',
-      templateUrl: 'admin.html',
+      templateUrl: 'admin/admin.html',
       resolve: requireAuthentication('admin')
     })
     .when('/refree', {
        controller: 'RefreeCtrl',
-       templateUrl: 'refree.html',
+       templateUrl: 'refree/admin.html',
        resolve: requireAuthentication('refree')
      })
     .when('/login', { controller: 'LoginCtrl', templateUrl: 'login.html' })

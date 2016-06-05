@@ -1,0 +1,12 @@
+<div ng-controller="CreateContestCtrl">
+  <md-tabs md-selected="data.selectedIndex">
+    <div ng-repeat="tab in tabs">
+      <md-tab id="tab{{$index+1}}" ng-disabled="tab.disabledd">
+        <md-tab-label>{{tab.label}}</md-tab-label>
+        <md-tab-body>
+          <ng-include src="tab.template"></ng-include>
+        </md-tab-body>
+      </md-tab>
+    </div>
+  </md-tabs>
+</div>

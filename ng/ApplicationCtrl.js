@@ -18,7 +18,7 @@ app.controller('ApplicationCtrl', function ($scope, $mdSidenav, $http, LoginSvc)
     $http.defaults.headers.common['X-auth'] = window.localStorage.token;
     LoginSvc.getUser()
     .success(function (response) {
-      console.log('current user: ');
+      console.log('current user vvv');
       console.log(response);
       $scope.currentUser = response;
     });

@@ -4,7 +4,6 @@ var router = require('express').Router(),
     _ = require('lodash');
 
 router.get('/:nameFormatted', function (req, res, next) {
-  console.log(req.params);
   Contest.findOne({ nameFormatted: req.params.nameFormatted })
   .populate('groups.contestants.horse')
   .populate('groups.contestants.horse.breeder')
@@ -71,6 +70,11 @@ router.post('/', function (req, res, next) {
     }
     res.status(201).json(contest);
   });
+});
+
+router.put('/', function (req, res, next) {
+
+  res.status(200).send('OK');
 });
 
 module.exports = router;

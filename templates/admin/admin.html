@@ -12,7 +12,7 @@
     </md-toolbar>
     <md-list>
       <md-list-item ng-repeat="action in actions">
-        <md-button ng-click="setSelected(actions)" ng-class="{ 'selected' : action === selected }">
+        <md-button ng-click="setSelected(action)" ng-class="{ 'selected' : action === selected }">
           <div class="action-info">
             <div>{{ action.label }}</div>
           </div>
@@ -23,7 +23,7 @@
 
   <md-content flex id="content">
     <md-content>
-      <h2>hello admin</h2>
+      <ng-include src="selected.template"></ng-include>
     </md-content>
   </md-content>
 </div>
