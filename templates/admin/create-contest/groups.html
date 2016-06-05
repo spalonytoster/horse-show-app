@@ -1,13 +1,26 @@
 <div ng-controller="GroupsCtrl">
-
-  <md-tabs md-dynamic-height>
-    <div ng-repeat="tab in tabs">
-      <md-tab id="group{{$index+1}}-tab">
-        <md-tab-label>{{tab.label}}</md-tab-label>
-        <md-tab-body>
-          <h1>halo</h1>
-        </md-tab-body>
-      </md-tab>
+  <md-content class="md-padding md-whiteframe-z1">
+    <md-tabs md-dynamic-height md-selected="tabIndex">
+      <div ng-repeat="tab in tabs">
+        <md-tab id="group{{$index+1}}-tab">
+          <md-tab-label>{{tab.label}}</md-tab-label>
+          <md-tab-body>
+            <h1>halo</h1>
+          </md-tab-body>
+        </md-tab>
+      </div>
+    </md-tabs>
+  </md-content>
+  <div layout="column" class="md-padding">
+    <div layout="row" layout-sm="column">
+      <div flex>
+        <md-button ng-click="removeCurrentGroup()" class="md-warn md-raised">Remove current</md-button>
+      </div>
+      <md-input-container>
+        <label for="label">Group name</label>
+        <input type="text" id="label" ng-model="groupTitle">
+      </md-input-container>
+      <md-button ng-disabled="!groupTitle" ng-click="addGroup()" class="md-primary md-raised">Add Group</md-button>
     </div>
-  </md-tabs>
+  </div>
 </div>
