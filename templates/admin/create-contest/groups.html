@@ -1,1 +1,13 @@
-groups
+<div ng-controller="GroupsCtrl">
+
+  <md-tabs md-dynamic-height>
+    <div ng-repeat="tab in tabs">
+      <md-tab id="group{{$index+1}}-tab">
+        <md-tab-label>{{tab.label}}</md-tab-label>
+        <md-tab-body>
+          <h1>halo</h1>
+        </md-tab-body>
+      </md-tab>
+    </div>
+  </md-tabs>
+</div>

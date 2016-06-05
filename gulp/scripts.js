@@ -6,7 +6,7 @@ var gulp = require('gulp'),
     livereload = require('gulp-livereload');
 
 gulp.task('js', function () {
-  gulp.src(['ng/mainModule.js', 'ng/config.js', 'ng/routes.js', 'ng/**/*.js'])
+  gulp.src(['ng/Admin/Admin.js', 'ng/App.js', 'ng/config.js', 'ng/routes.js', 'ng/**/*.js'])
     .pipe(sourcemaps.init())
       .pipe(concat('app.js'))
       .pipe(ngAnnotate())

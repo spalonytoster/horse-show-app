@@ -1,50 +1,39 @@
 <div layout="column" class="md-inline-form">
   <md-content layout-padding>
-    <div>
-      <form name="ContestInfoForm">
-        <div ng-controller="CreateContestFormCtrl">
-          <div layout-gt-sm="row">
-            <md-input-container flex="70">
-              <label>Name</label>
-              <md-icon md-font-icon="icon-home" aria-label="asd"></md-icon>
-              <input ng-model="contest.name">
-            </md-input-container>
-            <md-datepicker ng-model="contest.date" md-placeholder="Enter date"></md-datepicker>
-          </div>
-          <div layout-gt-sm="row">
-            <md-input-container class="md-block" flex="50">
-              <label>City</label>
-              <input ng-model="contest.location.city">
-            </md-input-container>
-            <md-input-container class="md-block" flex="50">
-              <label>Country</label>
-              <input ng-model="contest.location.country">
-            </md-input-container>
-          </div>
-          <div layout-gt-sm="row">
-            <md-input-container class="md-block" flex="50">
-              <md-radio-group ng-model="contest.format.max">
-                <md-radio-button value="10" class="md-primary">0-10</md-radio-button>
-                <md-radio-button value="20" class="md-primary">0-20</md-radio-button>
-              </md-radio-group>
-            </md-input-container>
-            <md-input-container class="md-block" flex="50">
-              <md-checkbox ng-model="data.cb1" aria-label="Halves allowed">
-                <span>Halves allowed</span>
-              </md-checkbox>
-            </md-input-container>
-          </div>
-          <div layout-gt-sm="row">
-            <div flex="80">
-              <md-button class="md-raised md-accent" ng-click="previous()">Previous</md-button>
-              <md-button class="md-raised md-primary" ng-click="next()">Next</md-button>
-            </div>
-            <div flex="20">
-              <md-button class="md-raised md-warn" ng-click="cancel()">Cancel</md-button>
-            </div>
-          </div>
+    <form name="ContestInfoForm">
+      <div ng-controller="CreateContestFormCtrl">
+        <div layout-gt-sm="row">
+          <md-input-container flex="70">
+            <label>Name</label>
+            <md-icon md-font-icon="icon-home" aria-label="asd"></md-icon>
+            <input name="name" ng-model="contest.name" required>
+          </md-input-container>
+          <md-datepicker name="date" ng-model="contest.date" md-placeholder="Enter date"></md-datepicker>
         </div>
-      </form>
-    </div>
+        <div layout-gt-sm="row">
+          <md-input-container class="md-block" flex="50">
+            <label>City</label>
+            <input name="city" ng-model="contest.location.city" required>
+          </md-input-container>
+          <md-input-container class="md-block" flex="50">
+            <label>Country</label>
+            <input name="country" ng-model="contest.location.country" required>
+          </md-input-container>
+        </div>
+        <div layout-gt-sm="row">
+          <md-input-container class="md-block" flex="50">
+            <md-radio-group name="format" ng-model="contest.format.max" required>
+              <md-radio-button value="10" class="md-primary">0-10</md-radio-button>
+              <md-radio-button value="20" class="md-primary">0-20</md-radio-button>
+            </md-radio-group>
+          </md-input-container>
+          <md-input-container class="md-block" flex="50">
+            <md-checkbox name="halvesAllowed" ng-model="contest.format.halvesAllowed" aria-label="Halves allowed">
+              <span>Halves allowed</span>
+            </md-checkbox>
+          </md-input-container>
+        </div>
+      </div>
+    </form>
   </md-content>
 </div>

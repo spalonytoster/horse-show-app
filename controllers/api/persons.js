@@ -9,7 +9,7 @@ var router = require('express').Router(),
     bcrypt = require('bcrypt'),
     config = require('../../config');
 
-  router.get('/user/', function (req, res, next) {
+  router.get('/user', function (req, res, next) {
     if (!req.headers['x-auth']) {
       res.status(401).end();
     }
@@ -28,19 +28,6 @@ var router = require('express').Router(),
     });
   });
 
-  router.get('/:username', function (req, res, next) {
-    Person.findOne({ username: req.params.username })
-    .select('username')
-    .select('password')
-    .select('role')
-    .select('name')
-    .select('surname')
-    .exec(function (err, person) {
-      if (err) { return next(err); }
-      res.json(person);
-    });
-  });
-
 router.get('/refrees', function (req, res, next) {
   Person.find({ role: roles.REFREE }).sort('-date').exec(function (err, refrees) {
     if (err) { return next(err); }
@@ -52,6 +39,19 @@ router.get('/breeders', function (req, res, next) {
   Person.find({ role: roles.BREEDER }).sort('-date').exec(function (err, breeders) {
     if (err) { return next(err); }
     res.json(breeders);
+  });
+});
+
+router.get('/:username', function (req, res, next) {
+  Person.findOne({ username: req.params.username })
+  .select('username')
+  .select('password')
+  .select('role')
+  .select('name')
+  .select('surname')
+  .exec(function (err, person) {
+    if (err) { return next(err); }
+    res.json(person);
   });
 });
 
