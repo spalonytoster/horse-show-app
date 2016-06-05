@@ -1,5 +1,5 @@
 <div ng-controller="CreateContestCtrl">
-  <md-tabs md-selected="data.selectedIndex">
+  <md-tabs md-dynamic-height md-selected="data.selectedIndex">
     <div ng-repeat="tab in tabs">
       <md-tab id="tab{{$index+1}}" ng-disabled="tab.disabledd">
         <md-tab-label>{{tab.label}}</md-tab-label>

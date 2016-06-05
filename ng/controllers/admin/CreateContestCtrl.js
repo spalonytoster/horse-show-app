@@ -1,4 +1,7 @@
 app.controller('CreateContestCtrl', function($scope) {
+
+  $scope.selectedIndex = 0;
+
   $scope.tabs = [{
     label: 'contest info',
     template: 'admin/create-contest/contest-info.html',
@@ -15,12 +18,5 @@ app.controller('CreateContestCtrl', function($scope) {
     label: 'groups',
     template: 'admin/create-contest/groups.html',
     disabled: true
-  },];
-
-  $scope.next = function() {
-    $scope.data.selectedIndex = Math.min($scope.data.selectedIndex + 1, 2);
-  };
-  $scope.previous = function() {
-    $scope.data.selectedIndex = Math.max($scope.data.selectedIndex - 1, 0);
-  };
+  }];
 });

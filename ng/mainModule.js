@@ -6,6 +6,7 @@ var app = angular.module('app', [
 
 app.config(function($mdThemingProvider) {
   $mdThemingProvider.theme('default')
-    .primaryPalette('pink')
-    .accentPalette('orange');
+    .primaryPalette('blue')
+    .accentPalette('green')
+    .warnPalette('red');
 });
