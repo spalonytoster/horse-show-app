@@ -36,4 +36,13 @@ angular.module('App.Admin')
       return $scope.tabIndex === $scope.tabs.length-1;
     };
 
+    $scope.$on('createContestRes', function (event, data) {
+        $scope.groups = data;
+    });
+
+    $scope.finish = function () {
+      return $scope.groups.get();
+
+    };
+
   });

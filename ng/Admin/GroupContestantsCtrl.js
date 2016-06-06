@@ -1,11 +1,8 @@
 angular.module('App.Admin')
-  .controller('ContestantsCtrl', function($scope, HorseSvc) {
+  .controller('GroupContestantsCtrl', function($scope) {
     'use strict';
 
-    HorseSvc.getAll()
-      .success(function(data) {
-        $scope.horses = data;
-      });
+    $scope.horses = $scope.startingList;
 
     $scope.limitOptions = [5, 10, 15];
 
@@ -31,8 +28,7 @@ angular.module('App.Admin')
     };
 
     $scope.logItem = function(item) {
-      console.log(item.name, 'was selected');
-      console.log($scope.startingList);
+      console.log($scope.group.label + ': ' + $scope.group.contestants);
     };
 
   });

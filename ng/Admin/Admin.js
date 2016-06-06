@@ -1,1 +1,1 @@
-angular.module('App.Admin', []);
+angular.module('App.Admin', ['ngMessages', 'material.svgAssetsCache']);

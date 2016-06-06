@@ -1,11 +1,8 @@
 angular.module('App.Admin')
-  .controller('ContestantsCtrl', function($scope, HorseSvc) {
+  .controller('GroupRefreesCtrl', function ($scope) {
     'use strict';
 
-    HorseSvc.getAll()
-      .success(function(data) {
-        $scope.horses = data;
-      });
+    $scope.refrees = $scope.chosenRefrees;
 
     $scope.limitOptions = [5, 10, 15];
 
@@ -21,7 +18,7 @@ angular.module('App.Admin')
     };
 
     $scope.query = {
-      order: 'name',
+      order: 'surname',
       limit: 5,
       page: 1
     };
@@ -31,8 +28,6 @@ angular.module('App.Admin')
     };
 
     $scope.logItem = function(item) {
-      console.log(item.name, 'was selected');
-      console.log($scope.startingList);
+      console.log($scope.group.label + ': ' + $scope.group.refrees);
     };
-
   });

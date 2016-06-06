@@ -3,7 +3,7 @@ angular.module('App.Admin')
 
     $scope.tabIndex = 0;
 
-    $scope.tabs = [{
+    $scope.groups = [{
       label: 'Group A',
       refrees: [],
       contestants: []
@@ -17,15 +17,19 @@ angular.module('App.Admin')
       contestants: []
     }];
 
+    $scope.groups.get = function () {
+      return HALO;
+    };
+
     $scope.addGroup = function () {
       var label;
       if ($scope.groupTitle) {
         label = $scope.groupTitle;
       }
       else {
-        label = 'Group ' + String.fromCharCode($scope.tabs.length + 65);
+        label = 'Group ' + String.fromCharCode($scope.groups.length + 65);
       }
-      $scope.tabs.push({
+      $scope.groups.push({
         label: label,
         refrees: [],
         contestants: []
@@ -34,7 +38,7 @@ angular.module('App.Admin')
     };
 
     $scope.removeCurrentGroup = function () {
-      $scope.tabs.splice($scope.tabIndex, 1);
+      $scope.groups.splice($scope.tabIndex, 1);
     };
 
   });
