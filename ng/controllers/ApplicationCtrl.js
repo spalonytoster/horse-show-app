@@ -40,7 +40,10 @@ angular.module('App')
     };
 
     $scope.setSelected = function (contest) {
-      console.log("HALO");
+      if (contest.template) {
+        $scope.selected = contest;
+        return;
+      }
       ContestSvc.getOne(contest.nameFormatted)
       .success(function (data) {
         $scope.selected = data;
