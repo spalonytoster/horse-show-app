@@ -1,4 +1,5 @@
 var db = require('../db');
+var deepPopulate = require('mongoose-deep-populate')(db);
 
 var scoreSchema = db.Schema({
   scoreType: {
@@ -37,7 +38,10 @@ var contestSchema = db.Schema({
     }],
     refrees: [{ type: db.Schema.ObjectId, ref: 'Person' }]
   }],
-  liveNow: { type: Boolean, default: false }
+  liveNow: { type: Boolean, default: false },
+  hasEnded: { type: Boolean, default: false}
 });
+
+contestSchema.plugin(deepPopulate);
 
 module.exports = db.model('Contest', contestSchema);

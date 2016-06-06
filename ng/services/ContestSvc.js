@@ -3,8 +3,8 @@ angular.module('App')
     this.getAll = function () {
       return $http.get('/api/contests');
     };
-    this.getOne = function (name) {
-      return $http.get('/api/contests/' + name);
+    this.getOne = function (nameFormatted) {
+      return $http.get('/api/contests/' + nameFormatted);
     };
     this.create = function (contest) {
       return $http.post('/api/contests', contest);

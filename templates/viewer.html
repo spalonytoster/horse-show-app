@@ -16,7 +16,7 @@
           <div class="tournament-info">
             <div ng-show="contest.liveNow">Live Now!</div>
             <div>{{ contest.name }}</div>
-            <div>{{ contest.location.city }} {{ getMomentDate(contest.date) }}</div>
+            <div>{{ contest.location.city }} - {{ getMomentDate(contest.date) }}</div>
           </div>
         </md-button>
       </md-list-item>
@@ -26,50 +26,16 @@
   <md-content flex id="content">
     <md-content>
       <md-tabs md-dynamic-height md-border-bottom>
-        <md-tab label="current voting">
-          <md-content class="md-padding">
-            <h2>{{ selected.name }}</h2>
-            <p>{{ selected.scoreTable.value }}</p>
-          </md-content>
-        </md-tab>
+        <div ng-if="selected.liveNow">
+          <md-tab label="current voting">
+            <md-content class="md-padding">
+              <ng-include src="'contest/current-voting.html'"></ng-include>
+            </md-content>
+          </md-tab>
+        </div>
         <md-tab label="score table">
           <md-content class="md-padding">
-            <md-input-container>
-              <label>Group</label>
-              <md-select ng-model="selectedGroupInput" ng-change="changeGroup(selectedGroupInput)">
-                <md-option ng-repeat="group in selected.groups">{{ group.name }}</md-option>
-              </md-select>
-            </md-input-container>
-
-            <!-- Data Table -->
-            <md-table-container>
-              <table md-table md-select-id="name" multiple ng-model="selected">
-                <thead md-head md-order="query.order">
-                  <tr md-row>
-                    <th md-column md-numeric>No.</th>
-                    <th md-column md-order-by="nameToLower"><span>Name</span></th>
-                    <th md-column>Sex</th>
-                    <th md-column>Breeder</th>
-                    <th md-column>Score</th>
-                  </tr>
-                </thead>
-                <tbody md-body>
-                  <tr md-row ng-repeat="contestant in selectedGroup.contestants">
-                    <td md-cell>{{ contestant.number }}</td>
-                    <td md-cell>{{ contestant.horse.name }}</td>
-                    <td md-cell>{{ contestant.horse.sex }}</td>
-                    <td md-cell>{{ contestant.breeder.name }} {{contestant.breeder.surname }}</td>
-                    <td md-cell>{{ contestant.score }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </md-table-container>
-
-            <md-table-pagination md-limit="query.limit" md-limit-options="[5, 10, 15]"
-              md-page="query.page" md-total="{{ selectedGroup.contestants.length }}"
-              md-page-select>
-            </md-table-pagination>
-
+            <ng-include src="'contest/score-table.html'"></ng-include>
           </md-content>
         </md-tab>
       </md-tabs>

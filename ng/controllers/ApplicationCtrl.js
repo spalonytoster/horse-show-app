@@ -1,5 +1,5 @@
 angular.module('App')
-  .controller('ApplicationCtrl', function ($scope, $mdSidenav, $http, $location, LoginSvc) {
+  .controller('ApplicationCtrl', function ($scope, $mdSidenav, $http, $location, LoginSvc, ContestSvc) {
     $scope.toggleSidebar = function () {
       $mdSidenav('sidebar').toggle();
     };
@@ -25,5 +25,38 @@ angular.module('App')
         $scope.currentUser = response;
       });
     }
+
+    $scope.getMomentDate = function (date) {
+      return moment(date).calendar();
+    };
+
+    $scope.getAverageScore = function (scores) {
+      var avgScore = 0;
+      scores.forEach(function (score) {
+        avgScore += score.value;
+      });
+      avgScore /= scores.length;
+      return avgScore;
+    };
+
+    $scope.setSelected = function (contest) {
+      console.log("HALO");
+      ContestSvc.getOne(contest.nameFormatted)
+      .success(function (data) {
+        $scope.selected = data;
+        $scope.selectedGroupInput = data.groups[0].name;
+        $scope.changeGroup($scope.selectedGroupInput);
+        console.log($scope.selected);
+      });
+    };
+
+    $scope.changeGroup = function (groupName) {
+      $scope.selected.groups.forEach(function (group) {
+        if (group.name === groupName) {
+          console.log('group changed to ' + group.name);
+          $scope.selectedGroup = group;
+        }
+      });
+    };
 
   });

@@ -35,7 +35,7 @@
       })
       .when('/refree', {
          controller: 'RefreeCtrl',
-         templateUrl: 'refree/admin.html',
+         templateUrl: 'refree/refree.html',
          resolve: requireAuthentication('refree')
        })
       .when('/login', { controller: 'LoginCtrl', templateUrl: 'login.html' })

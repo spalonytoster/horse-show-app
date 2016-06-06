@@ -1,12 +1,7 @@
 angular.module('App.Admin')
-  .controller('AdminCtrl', function ($scope) {
+  .controller('AdminCtrl', function ($scope, ContestSvc) {
 
     $scope.actions = [{
-      label: '#1 Grand Prix Amsterdam',
-      template: '',
-      isContest: true,
-      data: {}
-    }, {
       label: 'create contest',
       template: 'admin/create-contest/create-contest.html'
     }, {
@@ -20,7 +15,13 @@ angular.module('App.Admin')
       template: 'admin/manage-refrees.html'
     }];
 
-    $scope.setSelected = function (selected) {
-      $scope.selected = selected;
-    };
+    ContestSvc.getAll()
+      .success(function (contests) {
+        $scope.contests = _.filter(contests, { hasEnded: false });
+        console.log($scope.contests);
+        if ($scope.contests.length > 0) {
+          $scope.setSelected($scope.contests[0]);
+        }
+      });
+
   });

@@ -19,11 +19,29 @@
         </md-button>
       </md-list-item>
     </md-list>
+    <section>
+      <md-toolbar>
+        <h4>Live contests</h4>
+      </md-toolbar>
+      <md-list layout-padding>
+        <md-list-item ng-repeat="contest in contests">
+          <md-button ng-click="setSelected(contest)" ng-class="{ 'selected' : contest.name === selected.name }">
+            <div class="action-info">
+              <div>{{ contest.name }}</div>
+              <div>{{ contest.location.city }} - {{ getMomentDate(contest.date) }}</div>
+            </div>
+          </md-button>
+        </md-list-item>
+      </md-list>
+    </section>
   </md-sidenav>
 
   <md-content flex id="content">
-    <md-content>
+    <div ng-if="selected.template">
       <ng-include src="selected.template"></ng-include>
-    </md-content>
+    </div>
+    <div ng-if="!selected.template">
+      <ng-include src="'live-contest.html'"></ng-include>
+    </div>
   </md-content>
 </div>

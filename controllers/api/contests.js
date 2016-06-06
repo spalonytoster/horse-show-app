@@ -8,7 +8,7 @@ router.get('/:nameFormatted', function(req, res, next) {
       nameFormatted: req.params.nameFormatted
     })
     .populate('groups.contestants.horse')
-    .populate('groups.contestants.horse.breeder')
+    .deepPopulate('groups.contestants.horse.breeder')
     .populate('groups.refrees')
     .exec(function(err, contest) {
       if (err) {
@@ -20,10 +20,6 @@ router.get('/:nameFormatted', function(req, res, next) {
 
 router.get('/', function(req, res, next) {
   Contest.find()
-    .populate('groups.contestants.horse')
-    .populate('groups.contestants.horse.breeder')
-    .populate('groups.contestants.scores.refree')
-    .populate('groups.refrees')
     .exec(function(err, contests) {
       if (err) {
         return next(err);
@@ -56,7 +52,7 @@ router.post('/', function(req, res, next) {
 
   var contest = new Contest({
     name: req.body.name,
-    nameFormatted: _.kebabCase(req.body.name),
+    nameFormatted: _.kebabCase(req.body.name + ' ' + req.body.location.city),
     date: req.body.date,
     location: {
       city: req.body.location.city,

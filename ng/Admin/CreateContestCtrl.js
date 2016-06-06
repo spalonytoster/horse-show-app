@@ -1,5 +1,5 @@
 angular.module('App.Admin')
-  .controller('CreateContestCtrl', function($scope, ContestSvc) {
+  .controller('CreateContestCtrl', function($scope, $location, ContestSvc) {
 
     $scope.tabIndex = 0;
     $scope.startingList = [];
@@ -38,6 +38,15 @@ angular.module('App.Admin')
       $scope.tabIndex = tabIndex;
     };
 
+    $scope.cancel = function () {
+      $scope.tabIndex = 0;
+      $scope.startingList = [];
+      $scope.chosenRefrees = [];
+      $scope.getGroups = {};
+      $scope.getContestInfo = {};
+      $location.path('/admin');
+    };
+
     $scope.isLastTab = function () {
       return $scope.tabIndex === $scope.tabs.length-1;
     };
@@ -64,8 +73,11 @@ angular.module('App.Admin')
 
       ContestSvc.create($scope.contest)
         .success(function (contest) {
+          $scope.contests.push(contest);
           console.log(contest);
+          $location.path('/admin');
         });
+
     };
 
   });

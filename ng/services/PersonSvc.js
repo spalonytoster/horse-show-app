@@ -1,5 +1,5 @@
 angular.module('App')
-  .service('PersonsSvc', function ($http) {
+  .service('PersonSvc', function ($http) {
     this.getAll = function () {
       return $http.get('/api/persons');
     };

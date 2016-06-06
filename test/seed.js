@@ -202,6 +202,8 @@ async.series([
             halvesAllowed: Math.random() >= 0.5
           },
           groups: localGroups,
+          liveNow: false,
+          hasEnded: true
         })
         .save(function (err, contest) {
           if (err) { console.log(err); }
