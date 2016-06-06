@@ -4,7 +4,8 @@ angular.module('App.Admin')
     $scope.tabIndex = 0;
     $scope.startingList = [];
     $scope.chosenRefrees = [];
-    $scope.collectedGroups = [];
+    $scope.getGroups = {};
+    $scope.getContestInfo = {};
 
     $scope.tabs = [{
       label: 'contest info',
@@ -36,12 +37,21 @@ angular.module('App.Admin')
       return $scope.tabIndex === $scope.tabs.length-1;
     };
 
-    $scope.$on('createContestRes', function (event, data) {
-        $scope.groups = data;
-    });
-
     $scope.finish = function () {
-      console.log($scope.collectedGroups.get());
+      $scope.contest = $scope.getContestInfo.get();
+      $scope.contest.groups = $scope.getGroups.get();
+
+      $scope.contest.groups.forEach(function (elt, i, array) {
+        var counter = 1;
+        array[i].contestants = _.map(array[i].contestants, function (horse, index) {
+          return {
+            horse: horse,
+            number: counter++
+          };
+        });
+      });
+
+      console.log($scope.contest);
     };
 
   });

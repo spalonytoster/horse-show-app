@@ -1,16 +1,21 @@
 (function() {
-  var app = angular.module('App', [
+  angular.module('App', [
     'ngRoute',
     'ngMaterial',
     'md.data.table',
+    'btford.socket-io',
     'App.Admin'
-  ]);
+  ])
 
-  app.config(function($mdThemingProvider) {
+  .config(function($mdThemingProvider) {
     $mdThemingProvider.theme('default')
       .primaryPalette('blue')
       .accentPalette('green')
       .warnPalette('red');
+  })
+
+  .factory('mySocket', function (socketFactory) {
+    return socketFactory();
   });
 
 }());

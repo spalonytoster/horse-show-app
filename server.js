@@ -1,10 +1,11 @@
 /* jshint node: true, esversion: 6 */
-
 'use strict';
+
 var express = require('express'),
     bodyParser = require('body-parser'),
     serveStatic = require('serve-static'),
-    expressSession = require('express-session');
+    expressSession = require('express-session'),
+    socketio = require("socket.io");
 
 var app = express();
 
@@ -13,10 +14,16 @@ var app = express();
 var fs = require('fs'),
     https = require('https');
 
-var server = https.createServer({
-    key: fs.readFileSync('./ssl/my.key'),
-    cert: fs.readFileSync('./ssl/my.crt')
-}, app);
+// Uncomment for SSL
+// var server = https.createServer({
+//     key: fs.readFileSync('./ssl/my.key'),
+//     cert: fs.readFileSync('./ssl/my.crt')
+// }, app);
+
+var server = require('http').createServer(app);
+var io = socketio.listen(server);
+var sockets = require('./sockets')(io);
+var channels = sockets.channels;
 
 // parametry aplikacji
 var port = process.env.PORT || 3000,
@@ -44,6 +51,6 @@ app.use('/api/sessions', require('./controllers/api/sessions'));
 app.use('/', require('./controllers/static'));
 
 // TODO: in production listen on https instead of app
-app.listen(port, function () {
+server.listen(port, function () {
   console.log('Serwer nasłuchuje na porcie ' + port);
 });

@@ -17,7 +17,7 @@ angular.module('App.Admin')
       contestants: []
     }];
 
-    $scope.collectedGroups.get = function () {
+    $scope.getGroups.get = function () {
       return $scope.groups;
     };
 

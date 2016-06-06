@@ -15,6 +15,11 @@ var router = require('express').Router(),
     }
     var token, auth;
     token = req.headers['x-auth'];
+
+    if (!token) {
+      res.status(401).end();
+    }
+
     auth = jwt.decode(token, config.secret);
 
     Person.findOne({ username: auth.username })
