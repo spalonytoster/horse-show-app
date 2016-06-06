@@ -1,5 +1,5 @@
 angular.module('App.Admin')
-  .controller('CreateContestCtrl', function($scope) {
+  .controller('CreateContestCtrl', function($scope, ContestSvc) {
 
     $scope.tabIndex = 0;
     $scope.startingList = [];
@@ -26,11 +26,16 @@ angular.module('App.Admin')
     }];
 
     $scope.next = function() {
-      $scope.tabIndex = Math.min($scope.tabIndex + 1, 3);
+      var tabIndex = Math.min($scope.tabIndex + 1, 3);
+      // console.log(tabIndex);
+      $scope.tabs[tabIndex].disabled = false;
+      $scope.tabIndex = tabIndex;
     };
 
     $scope.previous = function() {
-      $scope.tabIndex = Math.max($scope.tabIndex - 1, 0);
+      var tabIndex = Math.max($scope.tabIndex - 1, 0);
+      // console.log(tabIndex);
+      $scope.tabIndex = tabIndex;
     };
 
     $scope.isLastTab = function () {
@@ -43,15 +48,24 @@ angular.module('App.Admin')
 
       $scope.contest.groups.forEach(function (elt, i, array) {
         var counter = 1;
-        array[i].contestants = _.map(array[i].contestants, function (horse, index) {
+        array[i].contestants = _.map(array[i].contestants, function (horse) {
           return {
-            horse: horse,
+            horse: horse._id,
             number: counter++
           };
+        });
+
+        array[i].refrees = _.map(array[i].refrees, function (refree) {
+          return refree._id;
         });
       });
 
       console.log($scope.contest);
+
+      ContestSvc.create($scope.contest)
+        .success(function (contest) {
+          console.log(contest);
+        });
     };
 
   });

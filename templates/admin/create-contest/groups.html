@@ -3,7 +3,7 @@
     <md-tabs md-dynamic-height md-selected="tabIndex">
       <div ng-repeat="group in groups">
         <md-tab id="group{{$index+1}}-tab">
-          <md-tab-label>{{group.label}}</md-tab-label>
+          <md-tab-label>{{group.name}}</md-tab-label>
           <md-tab-body>
             <!-- Horses Data Table -->
             <div ng-controller="GroupContestantsCtrl">
@@ -67,8 +67,8 @@
         <md-button ng-click="removeCurrentGroup()" class="md-warn md-raised">Remove current</md-button>
       </div>
       <md-input-container>
-        <label for="label">Group name</label>
-        <input type="text" id="label" ng-model="groupTitle">
+        <label for="name">Group name</label>
+        <input type="text" id="name" ng-model="groupTitle">
       </md-input-container>
       <md-button ng-disabled="!groupTitle" ng-click="addGroup()" class="md-primary md-raised">Add Group</md-button>
     </div>

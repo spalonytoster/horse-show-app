@@ -1,5 +1,5 @@
 angular.module('App')
-  .controller('ApplicationCtrl', function ($scope, $mdSidenav, $http, LoginSvc) {
+  .controller('ApplicationCtrl', function ($scope, $mdSidenav, $http, $location, LoginSvc) {
     $scope.toggleSidebar = function () {
       $mdSidenav('sidebar').toggle();
     };
@@ -12,6 +12,7 @@ angular.module('App')
       LoginSvc.logout();
       delete $scope.currentUser;
       delete window.localStorage.token;
+      $location.path('/login');
     };
 
     if (window.localStorage.token) {

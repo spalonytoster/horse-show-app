@@ -1,5 +1,5 @@
 angular.module('App')
-  .service('ContestsSvc', function ($http) {
+  .service('ContestSvc', function ($http) {
     this.getAll = function () {
       return $http.get('/api/contests');
     };

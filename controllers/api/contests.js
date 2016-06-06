@@ -1,49 +1,58 @@
 var router = require('express').Router(),
-    moment = require('moment'),
-    Contest = require('../../models/contest'),
-    _ = require('lodash');
+  moment = require('moment'),
+  Contest = require('../../models/contest'),
+  _ = require('lodash');
 
-router.get('/:nameFormatted', function (req, res, next) {
-  Contest.findOne({ nameFormatted: req.params.nameFormatted })
-  .populate('groups.contestants.horse')
-  .populate('groups.contestants.horse.breeder')
-  .populate('groups.refrees')
-  .exec(function (err, contest) {
-    if (err) { return next(err); }
-    res.json(contest);
-  });
+router.get('/:nameFormatted', function(req, res, next) {
+  Contest.findOne({
+      nameFormatted: req.params.nameFormatted
+    })
+    .populate('groups.contestants.horse')
+    .populate('groups.contestants.horse.breeder')
+    .populate('groups.refrees')
+    .exec(function(err, contest) {
+      if (err) {
+        return next(err);
+      }
+      res.json(contest);
+    });
 });
 
-router.get('/', function (req, res, next) {
+router.get('/', function(req, res, next) {
   Contest.find()
-  .populate('groups.contestants.horse')
-  .populate('groups.contestants.horse.breeder')
-  .populate('groups.contestants.scores.refree')
-  .populate('groups.refrees')
-  .exec(function (err, contests) {
-    if (err) { return next(err); }
-    res.json(contests);
-  });
+    .populate('groups.contestants.horse')
+    .populate('groups.contestants.horse.breeder')
+    .populate('groups.contestants.scores.refree')
+    .populate('groups.refrees')
+    .exec(function(err, contests) {
+      if (err) {
+        return next(err);
+      }
+      res.json(contests);
+    });
 });
 
-router.post('/', function (req, res, next) {
+router.post('/', function(req, res, next) {
   var groups = [];
-  req.body.groups.forEach(function (group) {
-    var groupToRet = {};
-    groupToRet.name = group.name;
-    groupToRet.contestants = []; groupToRet.refrees = [];
-    group.contestants.forEach(function (contestant) {
-      var contestantToRet = {};
-      contestantToRet.horse = contestant.horse;
-      contestantToRet.number = contestant.number;
-      contestantToRet.score = contestant.score;
-      groupToRet.contestants.push(contestantToRet);
+  if (req.body.groups) {
+    req.body.groups.forEach(function(group) {
+      var groupToRet = {};
+      groupToRet.name = group.name;
+      groupToRet.contestants = [];
+      groupToRet.refrees = [];
+      group.contestants.forEach(function(contestant) {
+        var contestantToRet = {};
+        contestantToRet.horse = contestant.horse;
+        contestantToRet.number = contestant.number;
+        contestantToRet.score = contestant.score;
+        groupToRet.contestants.push(contestantToRet);
+      });
+      group.refrees.forEach(function(refree) {
+        groupToRet.refrees.push(refree);
+      });
+      groups.push(groupToRet);
     });
-    group.refrees.forEach(function (refree) {
-      groupToRet.refrees.push(refree);
-    });
-    groups.push(groupToRet);
-  });
+  }
 
   var contest = new Contest({
     name: req.body.name,
@@ -63,7 +72,7 @@ router.post('/', function (req, res, next) {
 
   console.dir(contest);
 
-  contest.save(function (err, contest) {
+  contest.save(function(err, contest) {
     if (err) {
       console.dir(err);
       return next(err);
@@ -72,9 +81,16 @@ router.post('/', function (req, res, next) {
   });
 });
 
-router.put('/', function (req, res, next) {
-
-  res.status(200).send('OK');
+router.patch('/', function(req, res, next) {
+  console.dir(req.body);
+  var contest = new Contest(req.body);
+  contest.save(function(err, contest) {
+    if (err) {
+      console.dir(err);
+      return next(err);
+    }
+    res.status(201).json(contest);
+  });
 });
 
 module.exports = router;

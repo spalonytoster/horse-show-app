@@ -37,7 +37,7 @@ var contestSchema = db.Schema({
     }],
     refrees: [{ type: db.Schema.ObjectId, ref: 'Person' }]
   }],
-  liveNow: Boolean
+  liveNow: { type: Boolean, default: false }
 });
 
 module.exports = db.model('Contest', contestSchema);

@@ -4,15 +4,15 @@ angular.module('App.Admin')
     $scope.tabIndex = 0;
 
     $scope.groups = [{
-      label: 'Group A',
+      name: 'Group A',
       refrees: [],
       contestants: []
     }, {
-      label: 'Group B',
+      name: 'Group B',
       refrees: [],
       contestants: []
     }, {
-      label: 'Group C',
+      name: 'Group C',
       refrees: [],
       contestants: []
     }];
@@ -22,15 +22,15 @@ angular.module('App.Admin')
     };
 
     $scope.addGroup = function () {
-      var label;
+      var name;
       if ($scope.groupTitle) {
-        label = $scope.groupTitle;
+        name = $scope.groupTitle;
       }
       else {
-        label = 'Group ' + String.fromCharCode($scope.groups.length + 65);
+        name = 'Group ' + String.fromCharCode($scope.groups.length + 65);
       }
       $scope.groups.push({
-        label: label,
+        name: name,
         refrees: [],
         contestants: []
       });
