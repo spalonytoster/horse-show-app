@@ -4,7 +4,7 @@ angular.module('App.Admin')
     $scope.tabIndex = 0;
     $scope.startingList = [];
     $scope.chosenRefrees = [];
-    $scope.groups = [];
+    $scope.collectedGroups = [];
 
     $scope.tabs = [{
       label: 'contest info',
@@ -41,8 +41,7 @@ angular.module('App.Admin')
     });
 
     $scope.finish = function () {
-      return $scope.groups.get();
-
+      console.log($scope.collectedGroups.get());
     };
 
   });

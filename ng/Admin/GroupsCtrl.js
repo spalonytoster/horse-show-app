@@ -17,8 +17,8 @@ angular.module('App.Admin')
       contestants: []
     }];
 
-    $scope.groups.get = function () {
-      return HALO;
+    $scope.collectedGroups.get = function () {
+      return $scope.groups;
     };
 
     $scope.addGroup = function () {
