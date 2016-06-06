@@ -6,33 +6,9 @@
         <h2>Place: 10</h2>
       </div>
     </div>
-    <div flex="40" layout="column" layout-align="center center">
-      <div flex="20" layout="column" layout-align="center center">
-        <h1>Iskierka</h1>
-        <h3>No. 1</h3>
-      </div>
-      <div flex="60" layout="column" layout-align="center center">
-        <h1>OBRAZ</h1>
-      </div>
-      <div flex="20" layout="column" layout-align="center center">
-        <h1>Marcin Brzyski</h1>
-      </div>
-    </div>
+    <div ng-include src="'contest/live-contest/contestant-overview.html'" include-replace></div>
     <div flex="30" layout="column" layout-align="center center">
-      <div flex="20" layout="row" layout-align="center center">
-        <div flex="50">
-          <md-button class="md-raised md-accent">pause</md-button>
-        </div>
-        <div flex="50">
-          <md-button class="md-raised md-primary">start</md-button>
-        </div>
-      </div>
-      <div flex="60" layout="column" layout-align="center center">
-        <h1>content</h1>
-      </div>
-      <div flex="20" layout="row" layout-align="center center">
-        <md-button class="md-raised md-warn">alert refrees</md-button>
-      </div>
+      <div ng-include src="'contest/live-contest/controls.html'" include-replace></div>
     </div>
   </div>
   <div flex="40" layout="column" layout-align="center center">
