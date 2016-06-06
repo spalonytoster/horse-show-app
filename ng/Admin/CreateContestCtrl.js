@@ -75,7 +75,7 @@ angular.module('App.Admin')
         .success(function (contest) {
           $scope.contests.push(contest);
           console.log(contest);
-          $location.path('/admin');
+          $scope.setSelected(contest);
         });
 
     };
