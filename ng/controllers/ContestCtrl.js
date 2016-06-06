@@ -6,7 +6,6 @@ angular.module('App')
     var stop;
     $scope.startTimer = function () {
       // won't start a new timer if there is one existing
-      console.log('HALO');
       if (angular.isDefined(stop)) return;
 
       stop = $interval(function () {
@@ -19,6 +18,7 @@ angular.module('App')
     };
 
     $scope.stopTimer = function () {
+      console.log('STOP');
       if (angular.isDefined(stop)) {
         $interval.cancel(stop);
         stop = undefined;
@@ -33,4 +33,5 @@ angular.module('App')
       // Make sure that the interval is destroyed
       $scope.stopTimer();
     });
+
   });
