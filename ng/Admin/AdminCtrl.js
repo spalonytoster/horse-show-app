@@ -18,5 +18,6 @@ angular.module('App.Admin')
     $scope.$on('contests-loaded', function () {
       console.log('admin: contests-loaded');
       $scope.contests = _.filter($scope.contests, { hasEnded: false });
+      $scope.setSelected($scope.contests[0]);
     });
   });

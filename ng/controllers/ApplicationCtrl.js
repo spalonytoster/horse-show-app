@@ -1,5 +1,7 @@
 angular.module('App')
-  .controller('ApplicationCtrl', function ($scope, $rootScope, $mdSidenav, $http, $location, LoginSvc, ContestSvc, socketio) {
+  .controller('ApplicationCtrl', function ($scope, $rootScope, $mdSidenav,
+                                           $http, $location, LoginSvc,
+                                           ContestSvc, socketio, $timeout) {
 
     $scope.toggleSidebar = function () {
       $mdSidenav('sidebar').toggle();
@@ -53,7 +55,7 @@ angular.module('App')
         $scope.selectedGroupInput = data.groups[0].name;
         $scope.changeGroup($scope.selectedGroupInput);
         console.log($scope.selected);
-        $scope.$broadcast('contests-loaded');
+
       });
     };
 
@@ -83,6 +85,9 @@ angular.module('App')
 
     ContestSvc.getAll().success(function (contests) {
       $scope.contests = contests;
+      $timeout(function () {
+        $scope.$broadcast('contests-loaded');
+      }, 50);
       if ($scope.contests.length > 0) {
         $scope.setSelected($scope.contests[0]);
       }
