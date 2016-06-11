@@ -1,5 +1,6 @@
 angular.module('App')
-  .controller('ApplicationCtrl', function ($scope, $mdSidenav, $http, $location, LoginSvc, ContestSvc) {
+  .controller('ApplicationCtrl', function ($scope, $rootScope, $mdSidenav, $http, $location, LoginSvc, ContestSvc, socketio) {
+
     $scope.toggleSidebar = function () {
       $mdSidenav('sidebar').toggle();
     };
@@ -64,8 +65,31 @@ angular.module('App')
       });
     };
 
-    $scope.getContestFromList = function (contest) {
-      return _.find($scope.contests, { nameFormatted: contest.nameFormatted });
+    $scope.updateContest = function (nameFormatted, callback) {
+      $scope.contests.forEach(function (contest, i, contests) {
+        if (nameFormatted === contest.nameFormatted) {
+          callback(contests[i]);
+          callback($scope.selected);
+        }
+      });
+    };
+
+    socketio.on('main:startContest', function (nameFormatted) {
+      $scope.updateContest(nameFormatted, function (contest) {
+        contest.liveNow = true;
+      });
+    });
+
+    ContestSvc.getAll().success(function (contests) {
+      $scope.contests = contests;
+      if ($scope.contests.length > 0) {
+        $scope.setSelected($scope.contests[0]);
+      }
+      console.log('broadcasting contests');
+    });
+
+    $scope.broadcastTest = function () {
+      $rootScope.$broadcast('test');
     };
 
   });

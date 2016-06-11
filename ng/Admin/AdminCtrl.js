@@ -15,12 +15,8 @@ angular.module('App.Admin')
       template: 'admin/manage-refrees.html'
     }];
 
-    ContestSvc.getAll()
-      .success(function (contests) {
-        $scope.contests = _.filter(contests, { hasEnded: false });
-        if ($scope.contests.length > 0) {
-          $scope.setSelected($scope.contests[0]);
-        }
-      });
-
+    $scope.$on('test', function () {
+      console.log('admin: contests-loaded');
+      $scope.contests = _.filter($scope.contests, { hasEnded: false });
+    });
   });

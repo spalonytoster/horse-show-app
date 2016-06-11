@@ -1,5 +1,5 @@
 angular.module('App.Admin')
-  .controller('ContestantsCtrl', function($scope, HorseSvc) {
+  .controller('ContestantsCtrl', function ($scope, HorseSvc) {
     'use strict';
 
     HorseSvc.getAll()

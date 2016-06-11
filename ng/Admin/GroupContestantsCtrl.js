@@ -23,11 +23,11 @@ angular.module('App.Admin')
       page: 1
     };
 
-    $scope.logOrder = function(order) {
+    $scope.logOrder = function (order) {
       console.log('order: ', order);
     };
 
-    $scope.logItem = function(item) {
+    $scope.logItem = function (item) {
       console.log($scope.group.label + ': ' + $scope.group.contestants);
     };
 

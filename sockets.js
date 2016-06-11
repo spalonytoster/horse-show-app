@@ -3,7 +3,8 @@
 
 var jwt = require('jwt-simple'),
     config = require('./config'),
-    Person = require('./models/person.js');
+    Person = require('./models/person.js'),
+    Contest = require('./models/contest.js');
 
 var authenticateClient = function (token, socket, callback) {
   var auth;
@@ -62,7 +63,26 @@ exports.init = function(io) {
             });
             socket.on('main:startContest', function (data) {
               if (auth.isAdmin()) {
-                console.log('admin started a contest');
+                Contest.findByIdAndUpdate(data._id, { liveNow: true }, function (err, contest) {
+                  if (err) { return; }
+                  console.log('admin started ' + contest.name);
+                  socket.emit('main:startContest', contest.nameFormatted);
+                });
+              }
+            });
+            socket.on('main:endContest', function (data) {
+              if (auth.isAdmin()) {
+                console.log('admin ended a contest');
+              }
+            });
+            socket.on('main:alertRefrees', function (data) {
+              if (auth.isAdmin()) {
+                console.log('refrees has been alerted');
+              }
+            });
+            socket.on('main:nextContestant', function (data) {
+              if (auth.isAdmin()) {
+                console.log('next contestant');
               }
             });
           });

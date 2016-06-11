@@ -1,12 +1,14 @@
 angular.module('App')
   .controller('ContestCtrl', function($scope, $interval, socketio) {
 
-    $scope.timeLeft = 10;
+    var VOTING_TIME = 10;
+
+    $scope.timeLeft = VOTING_TIME;
     $scope.timesUp = false;
     $scope.allVotesCollected = false;
 
     var stop;
-    $scope.startTimer = function () {
+    var startTimer = function () {
       // won't start a new timer if there is one existing
       if (angular.isDefined(stop)) return;
 
@@ -14,40 +16,50 @@ angular.module('App')
         if ($scope.timeLeft > 0) {
           $scope.timeLeft--;
         } else {
-          $scope.stopTimer();
+          stopTimer();
           $scope.timesUp = true;
         }
       }, 1000);
-
-      socketio.emit('main:startContest', { nameFormatted: $scope.selected.nameFormatted });
-      $scope.contests.forEach(function (contest, i) {
-        if (contest.nameFormatted === $scope.selected.nameFormatted) {
-          $scope.contests[i].liveNow = true;
-          $scope.selected.liveNow = true;
-          console.log($scope.contests[i].name + ' is now live');
-        }
-      });
     };
 
-    $scope.stopTimer = function () {
+    var stopTimer = function () {
       if (angular.isDefined(stop)) {
         $interval.cancel(stop);
         stop = undefined;
       }
     };
 
-    $scope.resetTimer = function () {
-      $scope.timeLeft = 120;
+    var resetTimer = function () {
+      $scope.timeLeft = VOTING_TIME;
     };
 
     $scope.$on('$destroy', function () {
-      // Make sure that the interval is destroyed
-      $scope.stopTimer();
+      $scope.stopTimer(); // Make sure that the interval is destroyed
     });
 
     $scope.alertRefrees = function () {
       console.log('alerting refrees');
       $scope.allVotesCollected = true;
     };
+
+    $scope.startContest = function () {
+      socketio.emit('main:startContest', { _id: $scope.selected._id });
+    };
+
+    $scope.endContest = function () {
+
+    };
+
+    $scope.pauseVoting = function () {
+      stopTimer();
+    };
+
+    $scope.startVoting = function () {
+      startTimer();
+    };
+
+    $scope.$on('test', function () {
+      console.log('mam test');
+    });
 
   });

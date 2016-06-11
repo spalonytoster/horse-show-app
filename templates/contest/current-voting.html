@@ -6,16 +6,19 @@
         <h2>Place: 10</h2>
       </div>
     </div>
-    <div flex="50" layout="column" layout-align="center center">
+    <div flex="40" layout="column" layout-align="center center">
       <div ng-include src="'contest/live-contest/contestant-overview.html'" include-replace></div>
     </div>
-    <div flex="30" layout="column" layout-align="center center">
+    <div flex="40" layout="column" layout-align="center center">
       <div ng-if="currentUser.role === 'admin'" flex="20" layout="row" layout-align="center center">
-        <div flex="50">
-          <md-button class="md-raised md-accent" ng-click="stopTimer()">pause</md-button>
+        <div flex="50" ng-if="!selected.isPaused">
+          <md-button class="md-raised md-accent" ng-disabled="!selected.liveNow" ng-click="pauseVoting()">pause</md-button>
         </div>
-        <div ng-if="!selected.liveNow" flex="50">
-          <md-button class="md-raised md-primary" ng-click="startTimer()">start</md-button>
+        <div flex="50" ng-if="selected.isPaused">
+          <md-button class="md-raised md-accent" ng-click="stopTimer()">resume</md-button>
+        </div>
+        <div ng-if="!selected.votingEnabled" flex="50">
+          <md-button class="md-raised md-primary" ng-disabled="!selected.liveNow" ng-click="startVoting()">start voting</md-button>
         </div>
         <div ng-if="selected.liveNow" flex="50">
           <md-button class="md-raised md-primary" ng-disabled="!allVotesCollected" ng-click="nextContestant()">next</md-button>
@@ -27,10 +30,13 @@
           <md-progress-circular md-mode="determinate" value="{{ timeLeft / 1.2 }}"></md-progress-circular>
         </div>
       </div>
-      <div ng-if="currentUser.role === 'admin' && timesUp && !allVotesCollected" flex="20" layout="row" layout-align="center center">
+      <div ng-if="currentUser.role === 'admin' && selected.liveNow && timesUp && !allVotesCollected" flex="20" layout="row" layout-align="center center">
         <md-button class="md-raised md-warn" ng-click="alertRefrees()">alert refrees</md-button>
       </div>
-      <div ng-if="currentUser.role === 'admin'" flex="20" lavout="row" layout-align="center none" layout-padding>
+      <div ng-if="currentUser.role === 'admin' && !selected.liveNow" flex="20" lavout="row" layout-align="center none" layout-padding>
+        <md-button class="md-raised md-warn" ng-click="broadcastTest()">start contest</md-button>
+      </div>
+      <div ng-if="currentUser.role === 'admin' && selected.liveNow" flex="20" lavout="row" layout-align="center none" layout-padding>
         <md-button class="md-raised md-warn" ng-click="endContest()">end contest</md-button>
       </div>
     </div>

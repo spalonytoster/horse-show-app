@@ -16,6 +16,13 @@ var scoreSchema = db.Schema({
   refree: { type: db.Schema.ObjectId, ref: 'Person' }
 });
 
+var currentVotingSchema = db.Schema({
+  group: String,
+  contestant: { type: db.Schema.ObjectId, ref: 'Horse' },
+  votingEnabled: Boolean,
+  scores: [scoreSchema]
+});
+
 var contestSchema = db.Schema({
   name: { type: String, required: true },
   nameFormatted: { type: String, required: true },
@@ -39,7 +46,8 @@ var contestSchema = db.Schema({
     refrees: [{ type: db.Schema.ObjectId, ref: 'Person' }]
   }],
   liveNow: { type: Boolean, default: false },
-  hasEnded: { type: Boolean, default: false}
+  hasEnded: { type: Boolean, default: false },
+  currentVoting: currentVotingSchema
 });
 
 contestSchema.plugin(deepPopulate);
