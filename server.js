@@ -22,7 +22,8 @@ var fs = require('fs'),
 
 var server = require('http').createServer(app);
 var io = socketio.listen(server);
-var sockets = require('./sockets')(io);
+    io.use(require('./sockets').authenticateWS);
+var sockets = require('./sockets').init(io);
 var channels = sockets.channels;
 
 // parametry aplikacji
@@ -36,7 +37,6 @@ app.use(expressSession({
     resave: false,
     saveUninitialized: false
 }));
-
 
 // Static resources
 app.use(serveStatic('templates'));

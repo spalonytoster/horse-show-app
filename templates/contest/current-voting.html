@@ -10,15 +10,15 @@
       <div ng-include src="'contest/live-contest/contestant-overview.html'" include-replace></div>
     </div>
     <div flex="30" layout="column" layout-align="center center">
-      <div flex="20" layout="row" layout-align="center center">
+      <div ng-if="currentUser.role === 'admin'" flex="20" layout="row" layout-align="center center">
         <div flex="50">
           <md-button class="md-raised md-accent" ng-click="stopTimer()">pause</md-button>
         </div>
         <div ng-if="!selected.liveNow" flex="50">
           <md-button class="md-raised md-primary" ng-click="startTimer()">start</md-button>
         </div>
-        <div ng-if="selected.liveNow" ng-disabled="!allVotesCollected" flex="50">
-          <md-button class="md-raised md-primary" ng-click="nextContestant()">next</md-button>
+        <div ng-if="selected.liveNow" flex="50">
+          <md-button class="md-raised md-primary" ng-disabled="!allVotesCollected" ng-click="nextContestant()">next</md-button>
         </div>
       </div>
       <div flex="50" layout="column" layout-align="center center">
@@ -27,10 +27,10 @@
           <md-progress-circular md-mode="determinate" value="{{ timeLeft / 1.2 }}"></md-progress-circular>
         </div>
       </div>
-      <div ng-if="timesUp && !allVotesCollected" flex="20" layout="row" layout-align="center center">
+      <div ng-if="currentUser.role === 'admin' && timesUp && !allVotesCollected" flex="20" layout="row" layout-align="center center">
         <md-button class="md-raised md-warn" ng-click="alertRefrees()">alert refrees</md-button>
       </div>
-      <div flex="20" lavout="row" layout-align="center none" layout-padding>
+      <div ng-if="currentUser.role === 'admin'" flex="20" lavout="row" layout-align="center none" layout-padding>
         <md-button class="md-raised md-warn" ng-click="endContest()">end contest</md-button>
       </div>
     </div>

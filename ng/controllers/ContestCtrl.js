@@ -45,4 +45,9 @@ angular.module('App')
       $scope.stopTimer();
     });
 
+    $scope.alertRefrees = function () {
+      console.log('alerting refrees');
+      $scope.allVotesCollected = true;
+    };
+
   });

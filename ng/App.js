@@ -15,7 +15,7 @@
   })
 
   .factory('socketio', function (socketFactory) {
-    var socket = io.connect('/main');
+    var socket = io.connect('/main', { query: "token=" + "secret-token" });
     return socketFactory({ ioSocket: socket });
   });
 
