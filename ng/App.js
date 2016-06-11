@@ -15,7 +15,9 @@
   })
 
   .factory('socketio', function (socketFactory) {
-    var socket = io.connect('/main', { query: "token=" + "secret-token" });
+    var token, socket;
+    token = typeof window.localStorage.token === 'string' ? window.localStorage.token : '';
+    socket = io.connect('/main', { query: "token=" + token });
     return socketFactory({ ioSocket: socket });
   });
 

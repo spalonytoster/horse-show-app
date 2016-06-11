@@ -1,4 +1,4 @@
-/* jshint node: true, esversion: 6 */
+/* jshint node: true */
 'use strict';
 
 var express = require('express'),
@@ -22,7 +22,7 @@ var fs = require('fs'),
 
 var server = require('http').createServer(app);
 var io = socketio.listen(server);
-    io.use(require('./sockets').authenticateWS);
+    io.use(require('./sockets').ensureToken);
 var sockets = require('./sockets').init(io);
 var channels = sockets.channels;
 
