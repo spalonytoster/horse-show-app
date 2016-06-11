@@ -1,1 +1,32 @@
-<h1>scores</h1>
+<div ng-controller="ScoreTableCtrl">
+  <!-- Data Table -->
+  <md-table-container>
+    <table md-table md-select-id="number">
+      <thead md-head md-order="refree.name">
+        <tr md-row>
+          <th md-column md-order-by="number" md-numeric>Refree</th>
+          <th md-column md-order-by="horse.name"><span>Type</span></th>
+          <th md-column>Neck</th>
+          <th md-column>Body</th>
+          <th md-column>Legs</th>
+          <th md-column>Movement</th>
+        </tr>
+      </thead>
+      <tbody md-body>
+        <tr md-row ng-repeat="score in scores | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
+          <td md-cell>{{ score.refree }}</td>
+          <td md-cell>{{ contestant.horse.name }}</td>
+          <td md-cell>{{ contestant.horse.sex }}</td>
+          <td md-cell>{{ contestant.horse.breeder.name }} {{contestant.horse.breeder.surname }}</td>
+          <td md-cell>{{ getAverageScore(contestant.scores) || 0 }}</td>
+          <td md-cell>{{ contestant.horse.sex }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </md-table-container>
+
+  <md-table-pagination md-limit="query.limit" md-limit-options="[5, 10, 15]"
+    md-page="query.page" md-total="{{ selectedGroup.contestants.length }}"
+    md-page-select>
+  </md-table-pagination>
+</div>

@@ -1,9 +1,11 @@
 angular.module('App')
-  .controller('ViewerCtrl', function ($scope, $mdSidenav, ContestSvc) {
+  .controller('ViewerCtrl', function ($scope, ContestSvc) {
 
     ContestSvc.getAll().success(function (contests) {
       $scope.contests = contests;
-      $scope.setSelected($scope.contests[0]);
+      if ($scope.contests.length > 0) {
+        $scope.setSelected($scope.contests[0]);
+      }
     });
 
   });

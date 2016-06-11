@@ -18,7 +18,6 @@ angular.module('App.Admin')
     ContestSvc.getAll()
       .success(function (contests) {
         $scope.contests = _.filter(contests, { hasEnded: false });
-        console.log($scope.contests);
         if ($scope.contests.length > 0) {
           $scope.setSelected($scope.contests[0]);
         }

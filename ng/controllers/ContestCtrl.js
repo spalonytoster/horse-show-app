@@ -1,7 +1,9 @@
 angular.module('App')
-  .controller('ContestCtrl', function($scope, $interval) {
+  .controller('ContestCtrl', function($scope, $interval, socketio) {
 
-    $scope.timeLeft = 120;
+    $scope.timeLeft = 10;
+    $scope.timesUp = false;
+    $scope.allVotesCollected = false;
 
     var stop;
     $scope.startTimer = function () {
@@ -13,12 +15,21 @@ angular.module('App')
           $scope.timeLeft--;
         } else {
           $scope.stopTimer();
+          $scope.timesUp = true;
         }
       }, 1000);
+
+      socketio.emit('main:startContest', { nameFormatted: $scope.selected.nameFormatted });
+      $scope.contests.forEach(function (contest, i) {
+        if (contest.nameFormatted === $scope.selected.nameFormatted) {
+          $scope.contests[i].liveNow = true;
+          $scope.selected.liveNow = true;
+          console.log($scope.contests[i].name + ' is now live');
+        }
+      });
     };
 
     $scope.stopTimer = function () {
-      console.log('STOP');
       if (angular.isDefined(stop)) {
         $interval.cancel(stop);
         stop = undefined;

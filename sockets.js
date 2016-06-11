@@ -7,6 +7,9 @@ module.exports = function(io) {
           socket.on('main:message', function (data) {
             console.log('/main:\n' + JSON.stringify(data, null, 2));
           });
+          socket.on('main:startContest', function (data) {
+            console.log('test: ' + data);
+          });
         })
     }
   };

@@ -24,7 +24,12 @@ router.get('/', function(req, res, next) {
       if (err) {
         return next(err);
       }
-      res.json(contests);
+      var result = [];
+      contests.forEach(function (contest) {
+        contest.groups = undefined;
+        result.push(contest);
+      });
+      res.json(result);
     });
 });
 

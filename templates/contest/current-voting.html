@@ -1,33 +1,41 @@
 <div id="current-voting" layout="column">
   <div flex="60" layout="row">
-    <div flex="30" layout="column" layout-align="center center">
+    <div flex="20" layout="column" layout-align="center center">
       <div layout="column" layout-align="center center" ng-hide="costam">
         <h1>Score: 6.5</h1>
         <h2>Place: 10</h2>
       </div>
     </div>
-    <div ng-include src="'contest/live-contest/contestant-overview.html'" include-replace></div>
+    <div flex="50" layout="column" layout-align="center center">
+      <div ng-include src="'contest/live-contest/contestant-overview.html'" include-replace></div>
+    </div>
     <div flex="30" layout="column" layout-align="center center">
-      <!-- <div ng-include src="'contest/live-contest/controls.html'" include-replace></div> -->
       <div flex="20" layout="row" layout-align="center center">
         <div flex="50">
           <md-button class="md-raised md-accent" ng-click="stopTimer()">pause</md-button>
         </div>
-        <div flex="50">
+        <div ng-if="!selected.liveNow" flex="50">
           <md-button class="md-raised md-primary" ng-click="startTimer()">start</md-button>
         </div>
+        <div ng-if="selected.liveNow" ng-disabled="!allVotesCollected" flex="50">
+          <md-button class="md-raised md-primary" ng-click="nextContestant()">next</md-button>
+        </div>
       </div>
-      <div flex="60" layout="column" layout-align="center center">
+      <div flex="50" layout="column" layout-align="center center">
         <h2>Time left: {{ timeLeft | secondsToMinutes }}</h2>
-        <md-progress-circular md-mode="determinate" value="{{ timeLeft / 1.2 }}"></md-progress-circular>
+        <div ng-if="!timesUp" layout="column" layout-align="center center">
+          <md-progress-circular md-mode="determinate" value="{{ timeLeft / 1.2 }}"></md-progress-circular>
+        </div>
       </div>
-      <div flex="20" layout="row" layout-align="center center">
-        <md-button class="md-raised md-warn">alert refrees</md-button>
+      <div ng-if="timesUp && !allVotesCollected" flex="20" layout="row" layout-align="center center">
+        <md-button class="md-raised md-warn" ng-click="alertRefrees()">alert refrees</md-button>
       </div>
-
+      <div flex="20" lavout="row" layout-align="center none" layout-padding>
+        <md-button class="md-raised md-warn" ng-click="endContest()">end contest</md-button>
+      </div>
     </div>
   </div>
-  <div flex="40" layout="column" layout-align="center center">
+  <div flex="40" layout="column" layout-align="center none">
     <ng-include src="'contest/live-contest/scores.html'"></ng-include>
   </div>
 </div>

@@ -44,9 +44,11 @@ angular.module('App')
         $scope.selected = contest;
         return;
       }
+      $scope.selected = { ready: false };
       ContestSvc.getOne(contest.nameFormatted)
       .success(function (data) {
         $scope.selected = data;
+        $scope.selected.ready = true;
         $scope.selectedGroupInput = data.groups[0].name;
         $scope.changeGroup($scope.selectedGroupInput);
         console.log($scope.selected);
@@ -60,6 +62,10 @@ angular.module('App')
           $scope.selectedGroup = group;
         }
       });
+    };
+
+    $scope.getContestFromList = function (contest) {
+      return _.find($scope.contests, { nameFormatted: contest.nameFormatted });
     };
 
   });

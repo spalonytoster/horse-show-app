@@ -14,8 +14,9 @@
       .warnPalette('red');
   })
 
-  .factory('mySocket', function (socketFactory) {
-    return socketFactory();
+  .factory('socketio', function (socketFactory) {
+    var socket = io.connect('/main');
+    return socketFactory({ ioSocket: socket });
   });
 
 }());
