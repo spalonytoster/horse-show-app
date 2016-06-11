@@ -58,8 +58,4 @@ angular.module('App')
       startTimer();
     };
 
-    $scope.$on('test', function () {
-      console.log('mam test');
-    });
-
   });

@@ -53,6 +53,7 @@ angular.module('App')
         $scope.selectedGroupInput = data.groups[0].name;
         $scope.changeGroup($scope.selectedGroupInput);
         console.log($scope.selected);
+        $scope.$broadcast('contests-loaded');
       });
     };
 
@@ -85,11 +86,6 @@ angular.module('App')
       if ($scope.contests.length > 0) {
         $scope.setSelected($scope.contests[0]);
       }
-      console.log('broadcasting contests');
     });
-
-    $scope.broadcastTest = function () {
-      $rootScope.$broadcast('test');
-    };
 
   });

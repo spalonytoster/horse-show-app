@@ -34,7 +34,7 @@
         <md-button class="md-raised md-warn" ng-click="alertRefrees()">alert refrees</md-button>
       </div>
       <div ng-if="currentUser.role === 'admin' && !selected.liveNow" flex="20" lavout="row" layout-align="center none" layout-padding>
-        <md-button class="md-raised md-warn" ng-click="broadcastTest()">start contest</md-button>
+        <md-button class="md-raised md-warn" ng-click="startContest()">start contest</md-button>
       </div>
       <div ng-if="currentUser.role === 'admin' && selected.liveNow" flex="20" lavout="row" layout-align="center none" layout-padding>
         <md-button class="md-raised md-warn" ng-click="endContest()">end contest</md-button>

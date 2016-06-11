@@ -15,7 +15,7 @@ angular.module('App.Admin')
       template: 'admin/manage-refrees.html'
     }];
 
-    $scope.$on('test', function () {
+    $scope.$on('contests-loaded', function () {
       console.log('admin: contests-loaded');
       $scope.contests = _.filter($scope.contests, { hasEnded: false });
     });
