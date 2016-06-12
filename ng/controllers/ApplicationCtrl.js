@@ -84,6 +84,20 @@ angular.module('App')
       });
     };
 
+    // Timer control
+
+    var startTimer = function () {
+      $scope.$broadcast('start-timer');
+    };
+
+    var stopTimer = function () {
+      $scope.$broadcast('stop-timer');
+    };
+
+    var resetTimer = function () {
+      $scope.$broadcast('reset-timer');
+    };
+
     // Socket.io listeners
 
     socketio.on('main:startContest', function (nameFormatted) {
@@ -93,22 +107,36 @@ angular.module('App')
       });
     });
 
+    socketio.on('main:endContest', function (nameFormatted) {
+      console.log('contest ended');
+      stopTimer();
+      $scope.updateContest(nameFormatted, function (contest) {
+        contest.liveNow = false;
+        contest.hasEnded = true;
+      });
+    });
+
     socketio.on('main:pauseContest', function (nameFormatted) {
+      stopTimer();
       $scope.updateContest(nameFormatted, function (contest) {
         contest.currentVoting.isPaused = true;
       });
     });
 
     socketio.on('main:resumeContest', function (nameFormatted) {
+      startTimer();
       $scope.updateContest(nameFormatted, function (contest) {
         contest.currentVoting.isPaused = false;
       });
     });
 
     socketio.on('main:votingStarted', function (nameFormatted) {
+      console.log('voting started');
+      startTimer();
       $scope.updateContest(nameFormatted, function (contest) {
         contest.currentVoting.votingStarted = true;
       });
+      startTimer();
     });
 
     socketio.on('main:votingEnded', function (nameFormatted) {
@@ -118,6 +146,7 @@ angular.module('App')
     });
 
     socketio.on('main:nextContestant', function (nameFormatted) {
+      resetTimer();
       $scope.updateContest(nameFormatted, function (contest) {
         // TODO
       });

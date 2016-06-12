@@ -20,6 +20,7 @@ angular.module('App')
 
     $scope.$on('start-timer', function () {
       // won't start a new timer if there is one existing
+      console.log('timer started');
       if (angular.isDefined(stop)) return;
 
       stop = $interval(function () {

@@ -10,14 +10,6 @@ angular.module('App')
     };
 
     $scope.sendScores = function () {
-      // var scores = [];
-      // for (var key in $scope.scores) {
-      //   scores.push({
-      //     type: key,
-      //     value: $scope.scores[key],
-      //     refree: $scope.currentUser._id
-      //   });
-      // }
 
       _.filter($scope.selected.currentVoting.scores, function (score) {
         return refree._id === $scope.currentUser._id;
