@@ -21,6 +21,20 @@ angular.module('App.Admin')
       $scope.setSelected($scope.contests[0]);
     });
 
+    // Timer control
+
+    var startTimer = function () {
+      $scope.$broadcast('start-timer');
+    };
+
+    var stopTimer = function () {
+      $scope.$broadcast('stop-timer');
+    };
+
+    var resetTimer = function () {
+      $scope.$broadcast('reset-timer');
+    };
+
     // Socket.io events firing
 
     $scope.alertRefrees = function () {

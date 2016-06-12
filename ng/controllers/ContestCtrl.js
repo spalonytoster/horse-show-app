@@ -1,5 +1,5 @@
 angular.module('App')
-  .controller('ContestCtrl', function($scope, $interval) {
+  .controller('ContestCtrl', function ($scope, $interval) {
 
     var VOTING_TIME = 10;
 
@@ -10,7 +10,15 @@ angular.module('App')
     // Timer stuff
 
     var stop;
-    var startTimer = function () {
+
+    var stopTimer = function () {
+      if (angular.isDefined(stop)) {
+        $interval.cancel(stop);
+        stop = undefined;
+      }
+    };
+
+    $scope.$on('start-timer', function () {
       // won't start a new timer if there is one existing
       if (angular.isDefined(stop)) return;
 
@@ -22,18 +30,13 @@ angular.module('App')
           $scope.timesUp = true;
         }
       }, 1000);
-    };
+    });
 
-    var stopTimer = function () {
-      if (angular.isDefined(stop)) {
-        $interval.cancel(stop);
-        stop = undefined;
-      }
-    };
+    $scope.$on('stop-timer', stopTimer);
 
-    var resetTimer = function () {
+    $scope.$on('reset-timer', function () {
       $scope.timeLeft = VOTING_TIME;
-    };
+    });
 
     $scope.$on('$destroy', function () {
       stopTimer(); // Make sure that the interval is destroyed
