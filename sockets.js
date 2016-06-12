@@ -61,16 +61,30 @@ exports.init = function(io) {
 
             socket.on('main:startContest', function (data) {
               if (auth.isAdmin()) {
-                Contest.findByIdAndUpdate(data._id, { liveNow: true }, function (err, contest) {
+                Contest.findById(data._id, function (err, contest) {
                   if (err) { return; }
-                  console.log('admin started ' + contest.name);
-                  socket.emit('main:startContest', contest.nameFormatted);
+                  // TODO: uncomment
+                  // contest.liveNow = true;
+                  // contest.currentVoting.group = contest.groups[0].name;
+                  contest.currentVoting.contestant = 0;
+                  contest.save(function (err) {
+                    console.log('admin started ' + contest.name);
+                    socket.emit('main:startContest', contest.nameFormatted);
+                  });
                 });
               }
             });
             socket.on('main:endContest', function (data) {
               if (auth.isAdmin()) {
-                console.log('admin ended a contest');
+                Contest.findById(data._id, function (err, contest) {
+                  if (err) { return; }
+                  contest.currentVoting = {};
+                  contest.hasEnded = true;
+                  contest.save(function (err) {
+                    console.log('admin paused ' + contest.name);
+                    socket.emit('main:pauseContest', contest.nameFormatted);
+                  });
+                });
               }
             });
             socket.on('main:pauseContest', function (data) {
@@ -101,7 +115,7 @@ exports.init = function(io) {
               if (auth.isAdmin()) {
                 Contest.findById(data._id, function (err, contest) {
                   if (err) { return; }
-                  contest.currentVoting.votingStarted = true;
+                  // contest.currentVoting.votingStarted = true;
                   contest.save(function (err) {
                     console.log('admin started voting ' + contest.name);
                     socket.emit('main:votingStarted', contest.nameFormatted);
@@ -128,7 +142,27 @@ exports.init = function(io) {
             });
             socket.on('main:nextContestant', function (data) {
               if (auth.isAdmin()) {
-                console.log('next contestant');
+                Contest.findById(data._id, function (err, contest) {
+                  if (err) { return; }
+                  contest.currentVoting.contestant++;
+                  contest.groups.forEach(function (group) {
+                    if (group.name === contest.currentVoting.group.name) {
+                      group.refrees.forEach(function (refree) {
+                        config.scoreTypes.forEach(function (scoreType) {
+                          contest.currentVoting.scores.push({
+                            type: scoreType,
+                            value: 0,
+                            refree: refree._id
+                          });
+                        });
+                      });
+                    }
+                  });
+                  contest.save(function (err) {
+                    console.log('next contestant ' + contest.name);
+                    socket.emit('main:nextContestant', contest.nameFormatted);
+                  });
+                });
               }
             });
           });

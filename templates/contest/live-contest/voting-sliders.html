@@ -1,0 +1,57 @@
+<div ng-controller="VotingSlidersCtrl" flex layout="column" layout-align="center none" layout-padding>
+  <div flex layout="row" layout-align="center none">
+    <span flex="10" class="md-button">Type</span>
+    <md-slider flex="80" class="md-primary" md-discrete
+              ng-change="sendScores()" ng-model="scores.type"
+              step="{{selected.format.halvesAllowed ? 0.5 : 1}}"
+              min="{{selected.format.min}}"
+              max="{{selected.format.max}}"
+              aria-label="rating">
+    </md-slider>
+    <span flex="10" class="md-button">{{ scores.type }}/{{ selected.format.max }}</span>
+  </div>
+  <div flex layout="row" layout-align="center none">
+    <span flex="10" class="md-button">Neck</span>
+    <md-slider flex="80" class="md-primary" md-discrete
+              ng-change="sendScores()" ng-model="scores.neck"
+              step="{{selected.format.halvesAllowed ? 0.5 : 1}}"
+              min="{{selected.format.min}}"
+              max="{{selected.format.max}}"
+              aria-label="rating">
+    </md-slider>
+    <span flex="10" class="md-button">{{ scores.neck }}/{{ selected.format.max }}</span>
+  </div>
+  <div flex layout="row" layout-align="center none">
+    <span flex="10" class="md-button">Body</span>
+    <md-slider flex="80" class="md-primary" md-discrete
+              ng-change="sendScores()" ng-model="scores.body"
+              step="{{selected.format.halvesAllowed ? 0.5 : 1}}"
+              min="{{selected.format.min}}"
+              max="{{selected.format.max}}"
+              aria-label="rating">
+    </md-slider>
+    <span flex="10" class="md-button">{{ scores.body }}/{{ selected.format.max }}</span>
+  </div>
+  <div flex layout="row" layout-align="center none">
+    <span flex="10" class="md-button">Legs</span>
+    <md-slider flex="80" class="md-primary" md-discrete
+              ng-change="sendScores()" ng-model="scores.legs"
+              step="{{selected.format.halvesAllowed ? 0.5 : 1}}"
+              min="{{selected.format.min}}"
+              max="{{selected.format.max}}"
+              aria-label="rating">
+    </md-slider>
+    <span flex="10" class="md-button">{{ scores.legs }}/{{ selected.format.max }}</span>
+  </div>
+  <div flex layout="row" layout-align="center none">
+    <span flex="10" class="md-button">Movement</span>
+    <md-slider flex="80" class="md-primary" md-discrete
+              ng-change="sendScores()" ng-model="scores.movement"
+              step="{{selected.format.halvesAllowed ? 0.5 : 1}}"
+              min="{{selected.format.min}}"
+              max="{{selected.format.max}}"
+              aria-label="rating">
+    </md-slider>
+    <span flex="10" class="md-button">{{ scores.movement }}/{{ selected.format.max }}</span>
+  </div>
+</div>

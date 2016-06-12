@@ -87,6 +87,7 @@ angular.module('App')
     // Socket.io listeners
 
     socketio.on('main:startContest', function (nameFormatted) {
+      console.log('contest started');
       $scope.updateContest(nameFormatted, function (contest) {
         contest.liveNow = true;
       });

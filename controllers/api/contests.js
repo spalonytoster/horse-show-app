@@ -20,16 +20,17 @@ router.get('/:nameFormatted', function(req, res, next) {
 
 router.get('/', function(req, res, next) {
   Contest.find()
+    .populate('groups.refrees')
     .exec(function(err, contests) {
       if (err) {
         return next(err);
       }
-      var result = [];
-      contests.forEach(function (contest) {
-        contest.groups = undefined;
-        result.push(contest);
-      });
-      res.json(result);
+      // var result = [];
+      // contests.forEach(function (contest) {
+      //   contest.groups = undefined;
+      //   result.push(contest);
+      // });
+      res.json(contests);
     });
 });
 

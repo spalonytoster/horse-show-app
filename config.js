@@ -10,5 +10,6 @@ module.exports = {
   sexes: {
     MARE: 'mare',
     STALLION: 'stallion'
-  }
+  },
+  scoreTypes: ['type', 'neck', 'body', 'legs', 'movement']
 };
