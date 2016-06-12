@@ -2,6 +2,7 @@
   <div flex="60" layout="row">
     <div flex="20" layout="column" layout-align="center center">
       <div layout="column" layout-align="center center" ng-hide="costam">
+        <h1>{{ selected.currentVoting.group }}</h1>
         <h1>Score: 6.5</h1>
         <h2>Place: 10</h2>
       </div>
@@ -11,11 +12,11 @@
     </div>
     <div flex="40" layout="column" layout-align="center center">
       <div ng-if="currentUser.role === 'admin'" flex="20" layout="row" layout-align="center center">
-        <div flex="50" ng-if="!selected.isPaused">
-          <md-button class="md-raised md-accent" ng-disabled="!selected.liveNow" ng-click="pauseVoting()">pause</md-button>
+        <div flex="50" ng-if="!selected.currentVoting.isPaused">
+          <md-button class="md-raised md-accent" ng-disabled="!selected.liveNow" ng-click="pauseContest()">pause</md-button>
         </div>
-        <div flex="50" ng-if="selected.isPaused">
-          <md-button class="md-raised md-accent" ng-click="stopTimer()">resume</md-button>
+        <div flex="50" ng-if="selected.currentVoting.isPaused">
+          <md-button class="md-raised md-accent" ng-click="resumeContest()">resume</md-button>
         </div>
         <div ng-if="!selected.votingEnabled" flex="50">
           <md-button class="md-raised md-primary" ng-disabled="!selected.liveNow" ng-click="startVoting()">start voting</md-button>

@@ -203,7 +203,8 @@ async.series([
           },
           groups: localGroups,
           liveNow: false,
-          hasEnded: true
+          hasEnded: true,
+          currentVoting: {}
         })
         .save(function (err, contest) {
           if (err) { console.log(err); }

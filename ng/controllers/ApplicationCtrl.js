@@ -7,6 +7,8 @@ angular.module('App')
       $mdSidenav('sidebar').toggle();
     };
 
+    // Login utils
+
     $scope.$on('login', function (_, user) {
       $scope.currentUser = user;
     });
@@ -29,6 +31,8 @@ angular.module('App')
       });
     }
 
+    // Contest utils
+
     $scope.getMomentDate = function (date) {
       return moment(date).calendar();
     };
@@ -43,6 +47,9 @@ angular.module('App')
     };
 
     $scope.setSelected = function (contest) {
+      if (!contest) {
+        return;
+      }
       if (contest.template) {
         $scope.selected = contest;
         return;
@@ -69,19 +76,55 @@ angular.module('App')
     };
 
     $scope.updateContest = function (nameFormatted, callback) {
-      $scope.contests.forEach(function (contest, i, contests) {
+      $scope.contests.forEach(function (contest) {
         if (nameFormatted === contest.nameFormatted) {
-          callback(contests[i]);
+          callback(contest);
           callback($scope.selected);
         }
       });
     };
+
+    // Socket.io listeners
 
     socketio.on('main:startContest', function (nameFormatted) {
       $scope.updateContest(nameFormatted, function (contest) {
         contest.liveNow = true;
       });
     });
+
+    socketio.on('main:pauseContest', function (nameFormatted) {
+      $scope.updateContest(nameFormatted, function (contest) {
+        contest.currentVoting.isPaused = true;
+      });
+    });
+
+    socketio.on('main:resumeContest', function (nameFormatted) {
+      $scope.updateContest(nameFormatted, function (contest) {
+        contest.currentVoting.isPaused = false;
+      });
+    });
+
+    socketio.on('main:votingStarted', function (nameFormatted) {
+      $scope.updateContest(nameFormatted, function (contest) {
+        contest.currentVoting.votingStarted = true;
+      });
+    });
+
+    socketio.on('main:votingEnded', function (nameFormatted) {
+      $scope.updateContest(nameFormatted, function (contest) {
+        contest.currentVoting.votingStarted = false;
+      });
+    });
+
+    socketio.on('main:nextContestant', function (nameFormatted) {
+      $scope.updateContest(nameFormatted, function (contest) {
+        // TODO
+      });
+    });
+
+
+
+    // Retrieving contests list on application start
 
     ContestSvc.getAll().success(function (contests) {
       $scope.contests = contests;

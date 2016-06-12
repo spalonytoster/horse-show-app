@@ -1,5 +1,5 @@
 angular.module('App.Admin')
-  .controller('AdminCtrl', function ($scope, ContestSvc) {
+  .controller('AdminCtrl', function ($scope, $interval, ContestSvc, socketio) {
 
     $scope.actions = [{
       label: 'create contest',
@@ -20,4 +20,49 @@ angular.module('App.Admin')
       $scope.contests = _.filter($scope.contests, { hasEnded: false });
       $scope.setSelected($scope.contests[0]);
     });
+
+    // Socket.io events firing
+
+    $scope.alertRefrees = function () {
+      console.log('alerting refrees');
+      $scope.allVotesCollected = true;
+    };
+
+    $scope.startContest = function () {
+      socketio.emit('main:startContest', { _id: $scope.selected._id });
+    };
+
+    $scope.endContest = function () {
+      stopTimer();
+      socketio.emit('main:endContest', { _id: $scope.selected._id });
+    };
+
+    $scope.pauseContest = function () {
+      stopTimer();
+      socketio.emit('main:pauseContest', { _id: $scope.selected._id });
+    };
+
+    $scope.resumeContest = function () {
+      startTimer();
+      socketio.emit('main:resumeContest', { _id: $scope.selected._id });
+    };
+
+    $scope.votingStarted = function () {
+      startTimer();
+      socketio.emit('main:votingStarted', { _id: $scope.selected._id });
+    };
+
+    $scope.votingEnded = function () {
+      socketio.emit('main:votingEnded', { _id: $scope.selected._id });
+    };
+
+    $scope.alertRefrees = function () {
+      socketio.emit('main:alertRefrees', { _id: $scope.selected._id });
+    };
+
+    $scope.nextContestant = function () {
+      resetTimer();
+      socketio.emit('main:nextContestant', { _id: $scope.selected._id });
+    };
+
   });

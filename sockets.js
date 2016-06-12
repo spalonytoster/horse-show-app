@@ -58,9 +58,7 @@ exports.init = function(io) {
         .on('connection', function (socket) {
           authenticateClient(socket.handshake.query.token, socket, function (auth) {
             console.log(auth.role + ' has connected to main channel');
-            socket.on('main:message', function (data) {
-              console.log('/main:\n' + JSON.stringify(data, null, 2));
-            });
+
             socket.on('main:startContest', function (data) {
               if (auth.isAdmin()) {
                 Contest.findByIdAndUpdate(data._id, { liveNow: true }, function (err, contest) {
@@ -73,6 +71,54 @@ exports.init = function(io) {
             socket.on('main:endContest', function (data) {
               if (auth.isAdmin()) {
                 console.log('admin ended a contest');
+              }
+            });
+            socket.on('main:pauseContest', function (data) {
+              if (auth.isAdmin()) {
+                Contest.findById(data._id, function (err, contest) {
+                  if (err) { return; }
+                  contest.currentVoting.isPaused = true;
+                  contest.save(function (err) {
+                    console.log('admin paused ' + contest.name);
+                    socket.emit('main:pauseContest', contest.nameFormatted);
+                  });
+                });
+              }
+            });
+            socket.on('main:resumeContest', function (data) {
+              if (auth.isAdmin()) {
+                Contest.findById(data._id, function (err, contest) {
+                  if (err) { return; }
+                  contest.currentVoting.isPaused = false;
+                  contest.save(function (err) {
+                    console.log('admin resumed ' + contest.name);
+                    socket.emit('main:resumeContest', contest.nameFormatted);
+                  });
+                });
+              }
+            });
+            socket.on('main:votingStarted', function (data) {
+              if (auth.isAdmin()) {
+                Contest.findById(data._id, function (err, contest) {
+                  if (err) { return; }
+                  contest.currentVoting.votingStarted = true;
+                  contest.save(function (err) {
+                    console.log('admin started voting ' + contest.name);
+                    socket.emit('main:votingStarted', contest.nameFormatted);
+                  });
+                });
+              }
+            });
+            socket.on('main:votingEnded', function (data) {
+              if (auth.isAdmin()) {
+                Contest.findById(data._id, function (err, contest) {
+                  if (err) { return; }
+                  contest.currentVoting.votingStarted = false;
+                  contest.save(function (err) {
+                    console.log('voting phase ended ' + contest.name);
+                    socket.emit('main:votingEnded', contest.nameFormatted);
+                  });
+                });
               }
             });
             socket.on('main:alertRefrees', function (data) {

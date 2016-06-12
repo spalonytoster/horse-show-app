@@ -1,11 +1,13 @@
 angular.module('App')
-  .controller('ContestCtrl', function($scope, $interval, socketio) {
+  .controller('ContestCtrl', function($scope, $interval) {
 
     var VOTING_TIME = 10;
 
     $scope.timeLeft = VOTING_TIME;
     $scope.timesUp = false;
     $scope.allVotesCollected = false;
+
+    // Timer stuff
 
     var stop;
     var startTimer = function () {
@@ -34,28 +36,7 @@ angular.module('App')
     };
 
     $scope.$on('$destroy', function () {
-      $scope.stopTimer(); // Make sure that the interval is destroyed
+      stopTimer(); // Make sure that the interval is destroyed
     });
-
-    $scope.alertRefrees = function () {
-      console.log('alerting refrees');
-      $scope.allVotesCollected = true;
-    };
-
-    $scope.startContest = function () {
-      socketio.emit('main:startContest', { _id: $scope.selected._id });
-    };
-
-    $scope.endContest = function () {
-
-    };
-
-    $scope.pauseVoting = function () {
-      stopTimer();
-    };
-
-    $scope.startVoting = function () {
-      startTimer();
-    };
 
   });
