@@ -17,8 +17,12 @@ var scoreSchema = db.Schema({
 });
 
 var currentVotingSchema = db.Schema({
-  group: String,
-  contestant: { type: db.Schema.ObjectId, ref: 'Horse' },
+  group: Number,
+  contestant: {
+    index: Number,
+    number: Number,
+    horse: { type: db.Schema.ObjectId, ref: 'Horse' }
+  },
   votingStarted: Boolean,
   isPaused: Boolean,
   timeLeft: Number,

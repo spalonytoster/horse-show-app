@@ -1,5 +1,5 @@
 angular.module('App')
-  .controller('RefreeCtrl', function ($scope) {
+  .controller('RefreeCtrl', function ($scope, socketio) {
 
     $scope.$on('contests-loaded', function () {
       console.log('admin: contests-loaded');
@@ -17,4 +17,11 @@ angular.module('App')
       });
       $scope.setSelected($scope.contests[0]);
     });
+
+    socketio.on('main:alertRefrees', function (nameFormatted) {
+      if ($scope.selected.nameFormatted === nameFormatted) {
+        console.log('HURRY UP REFREE!');
+      }
+    });
+
   });

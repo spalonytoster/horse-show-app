@@ -136,7 +136,6 @@ angular.module('App')
       $scope.updateContest(nameFormatted, function (contest) {
         contest.currentVoting.votingStarted = true;
       });
-      startTimer();
     });
 
     socketio.on('main:votingEnded', function (nameFormatted) {
@@ -145,14 +144,15 @@ angular.module('App')
       });
     });
 
-    socketio.on('main:nextContestant', function (nameFormatted) {
+    socketio.on('main:nextContestant', function (nameFormatted, nextContestant, nextContestantIndex) {
       resetTimer();
+      console.log(nextContestant);
       $scope.updateContest(nameFormatted, function (contest) {
-        // TODO
+        contest.currentVoting.contestant.index = nextContestantIndex;
+        contest.currentVoting.contestant.number = nextContestant.number;
+        contest.currentVoting.contestant.horse = nextContestant.horse;
       });
     });
-
-
 
     // Retrieving contests list on application start
 

@@ -68,10 +68,8 @@ exports.init = function(io) {
                   if (err) {
                     return;
                   }
-                  // TODO: uncomment
-                  // contest.liveNow = true;
-                  // contest.currentVoting.group = contest.groups[0].name;
-                  contest.currentVoting.contestant = 0;
+                  contest.liveNow = true;
+                  contest.currentVoting.group = 0;
                   contest.save(function(err) {
                     console.log('admin started ' + contest.name);
                     io.of('/main').emit('main:startContest', contest.nameFormatted);
@@ -152,7 +150,11 @@ exports.init = function(io) {
             });
             socket.on('main:alertRefrees', function(data) {
               if (auth.isAdmin()) {
-                console.log('refrees has been alerted');
+                Contest.findById(data._id, function(err, contest) {
+                  if (err) { return; }
+                  console.log('refrees has been alerted');
+                  io.of('/main').emit('main:alertRefrees', contest.nameFormatted);
+                });
               }
             });
             socket.on('main:nextContestant', function(data) {
@@ -162,10 +164,17 @@ exports.init = function(io) {
                     return;
                   }
                   if (typeof contest.currentVoting.contestant === 'undefined') {
-                    contest.currentVoting.contestant = 0;
-                  } else {
-                    contest.currentVoting.contestant++;
+                    contest.currentVoting.contestant = {
+                      index: 0
+                    };
+                    console.log('created contest.currentVoting.contestant');
                   }
+                  else {
+                    contest.currentVoting.contestant.index++;
+                  }
+                  var contestantToRet = contest.groups[contest.currentVoting.group].contestants[contest.currentVoting.contestant.index];
+                  contest.currentVoting.contestant.horse = contestantToRet.horse;
+                  contest.currentVoting.contestant.number = contestantToRet.number;
                   contest.groups.forEach(function(group) {
                     if (group.name === contest.currentVoting.group.name) {
                       group.refrees.forEach(function(refree) {
@@ -181,26 +190,23 @@ exports.init = function(io) {
                   });
                   contest.save(function(err) {
                     console.log('next contestant ' + contest.name);
-                    io.of('/main').emit('main:nextContestant', contest.nameFormatted);
+                    io.of('/main').emit('main:nextContestant', contest.nameFormatted, contestantToRet, contest.currentVoting.contestant.index);
                   });
                 });
               }
             });
             socket.on('main:startTimer', function(data) {
               if (auth.isAdmin()) {
-                console.log('admin started timer');
                 io.of('/main').emit('main:startTimer', data);
               }
             });
             socket.on('main:stopTimer', function(data) {
               if (auth.isAdmin()) {
-                console.log('admin stopped timer');
                 io.of('/main').emit('main:stopTimer', data);
               }
             });
             socket.on('main:resetTimer', function(data) {
               if (auth.isAdmin()) {
-                console.log('admin reset timer');
                 io.of('/main').emit('main:resetTimer', data);
               }
             });

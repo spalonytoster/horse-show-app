@@ -2,13 +2,18 @@
   <div flex="60" layout="row">
     <div flex="20" layout="column" layout-align="center center">
       <div layout="column" layout-align="center center" ng-hide="costam">
-        <h4>{{ selected.currentVoting.group }}</h4>
-        <h1>Score: 6.5</h1>
-        <h2>Place: 10</h2>
+        <h4>{{ selected.groups[selected.currentVoting.group].name }}</h4>
+        <h1>Score: {{ getAverageScore(selected.currentVoting.scores) || 'N/A' }}</h1>
+        <h2>Place: N/A</h2>
       </div>
     </div>
     <div flex="40" layout="column" layout-align="center center">
-      <div ng-include src="'contest/live-contest/contestant-overview.html'" include-replace></div>
+      <div ng-show="selected.currentVoting.contestant" flex layout="column" layout-align="center center">
+        <div ng-include src="'contest/live-contest/contestant-overview.html'" include-replace></div>
+      </div>
+      <div ng-hide="selected.currentVoting.contestant" flex layout="column" layout-align="center center">
+        <div ng-include src="'contest/live-contest/contestant-placeholder.html'" include-replace></div>
+      </div>
     </div>
     <div flex="40" layout="column" layout-align="center center">
       <div ng-if="currentUser.role === 'admin'" flex="20" layout="row" layout-align="center center">
@@ -22,7 +27,7 @@
           <md-button class="md-raised md-primary" ng-disabled="!selected.liveNow || selected.currentVoting.votingStarted" ng-click="votingStarted()">start voting</md-button>
         </div>
         <div ng-if="selected.liveNow" flex="50">
-          <md-button class="md-raised md-primary" ng-disabled="!allVotesCollected" ng-click="nextContestant()">next</md-button>
+          <md-button class="md-raised md-primary" ng-disabled="selected.currentVoting.votingStarted && !allVotesCollected" ng-click="nextContestant()">next</md-button>
         </div>
       </div>
       <div flex="50" layout="column" layout-align="center center">
