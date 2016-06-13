@@ -275,9 +275,6 @@ exports.init = function(io) {
                     var refreeId = person._id;
                     var scores = _.filter(contest.currentVoting.scores, { refree: refreeId });
 
-                    console.log('before:');
-                    console.log(scores);
-
                     scores.forEach(function (score) {
                       switch (score.scoreType) {
                         case 'type': score.value = data.scores.type;
@@ -294,10 +291,21 @@ exports.init = function(io) {
                       }
                     });
 
-                    console.log('\nafter:');
-                    console.log(scores);
                     contest.save();
-                    io.of('/main').emit('main:updateScores', {  });
+                  });
+                });
+              }
+            });
+            // po kliknieciu submit przez sedziego, jego oceny sa rozsylane do wszystkich
+            socket.on('main:broadcastRefreeScores', function(data) {
+              if (auth.isRefree()) {
+                Contest.findById(data._id, function (err, contest) {
+                  Person.findOne({ username: auth.username }, function (err, person) {
+                    var refreeId = person._id;
+                    var scores = _.filter(contest.currentVoting.scores, { refree: refreeId });
+                    Array.prototype.push.apply(contest.groups[contest.currentVoting.group].contestants[contest.currentVoting.contestant.index].scores, scores);
+                    contest.save();
+                    io.of('/main').emit('main:updateScores', { nameFormatted: contest.nameFormatted, scores: scores });
                   });
                 });
               }

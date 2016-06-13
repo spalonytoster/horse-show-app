@@ -56,16 +56,16 @@ angular.module('App')
       });
 
       socketio.emit('main:updateScores', { _id: $scope.selected._id, scores: $scope.scores });
-
       console.log($scope.selected.currentVoting.scores);
     };
 
     $scope.finalizeScores = function () {
       console.log('finalizeScores');
-      $scope.updateContest($scope.selected.nameFormatted, function (contest) {
-        Array.prototype.push.apply(contest.groups[$scope.selected.currentVoting.group].contestants[$scope.selected.currentVoting.contestant.index].scores, $scope.scores);
-        $scope.scoresSubmitted = true;
-      });
+      // $scope.updateContest($scope.selected.nameFormatted, function (contest) {
+        // Array.prototype.push.apply(contest.groups[$scope.selected.currentVoting.group].contestants[$scope.selected.currentVoting.contestant.index].scores, $scope.scores);
+      // });
+      $scope.scoresSubmitted = true;
+      socketio.emit('main:broadcastRefreeScores', { _id: $scope.selected._id, scores: $scope.selected.currentVoting.scores });
     };
 
   });

@@ -185,6 +185,12 @@ angular.module('App')
       $scope.$broadcast('next-contestant');
     });
 
+    socketio.on('main:updateScores', function (data) {
+      $scope.updateContest(data.nameFormatted, function (contest) {
+        Array.prototype.push.apply(contest.groups[contest.currentVoting.group].contestants[contest.currentVoting.contestant.index].scores, data.scores);
+      });
+    });
+
     // Retrieving contests list on application start
 
     ContestSvc.getAll().success(function (contests) {
