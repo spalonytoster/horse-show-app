@@ -3,9 +3,14 @@ angular.module('App')
 
     var VOTING_TIME = 10;
 
+    $scope.$on('refresh-timer', function () {
+      $scope.timeLeft = $scope.selected.currentVoting.timeLeft;
+    });
     $scope.$on('contest-loaded', function () {
       $scope.timeLeft = $scope.selected.currentVoting.timeLeft;
-      startTimer();
+      if ($scope.selected.currentVoting.votingStarted) {
+        startTimer();
+      }
     });
     $scope.timesUp = false;
     $scope.allVotesCollected = false;

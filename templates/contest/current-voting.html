@@ -31,7 +31,7 @@
         </div>
       </div>
       <div flex="50" layout="column" layout-align="center center">
-        <h2>Time left: {{ timeLeft | secondsToMinutes }}</h2>
+        <h2>Time left: {{ timeLeft || 0 | secondsToMinutes }}</h2>
         <div ng-if="!timesUp" layout="column" layout-align="center center">
           <md-progress-circular md-mode="determinate" value="{{ timeLeft / 1.2 }}"></md-progress-circular>
         </div>

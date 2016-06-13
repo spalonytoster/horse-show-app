@@ -1,5 +1,5 @@
 angular.module('App')
-  .controller('VotingSlidersCtrl', function ($scope) {
+  .controller('VotingSlidersCtrl', function ($scope, socketio) {
 
     $scope.scores = {
       type: 0,
@@ -9,12 +9,37 @@ angular.module('App')
       movement: 0
     };
 
-    $scope.sendScores = function () {
-
+    $scope.$on('contest-loaded', function () {
       _.filter($scope.selected.currentVoting.scores, function (score) {
-        return refree._id === $scope.currentUser._id;
+        return score.refree === $scope.currentUser._id;
       })
       .forEach(function (score) {
+        switch (score.scoreType) {
+          case 'type': $scope.scores.type = score.value;
+            break;
+          case 'neck': $scope.scores.neck = score.value;
+            break;
+          case 'body': $scope.scores.body = score.value;
+            break;
+          case 'legs': $scope.scores.legs = score.value;
+            break;
+          case 'movement': $scope.scores.movement = score.value;
+            break;
+          default:
+        }
+      });
+    });
+
+    $scope.$on('next-contestant', function () {
+      $scope.scoresSubmitted = false;
+    });
+
+    $scope.sendScores = function () {
+      var scores = _.filter($scope.selected.currentVoting.scores, function (score) {
+        return score.refree === $scope.currentUser._id;
+      });
+
+      scores.forEach(function (score) {
         switch (score.scoreType) {
           case 'type': score.value = $scope.scores.type;
             break;
@@ -30,9 +55,17 @@ angular.module('App')
         }
       });
 
+      socketio.emit('main:updateScores', { _id: $scope.selected._id, scores: $scope.scores });
+
       console.log($scope.selected.currentVoting.scores);
-      // Push scores to currentVoting object
-      // Array.prototype.push.apply($scope.selected.currentVoting.scores, scores);
+    };
+
+    $scope.finalizeScores = function () {
+      console.log('finalizeScores');
+      $scope.updateContest($scope.selected.nameFormatted, function (contest) {
+        Array.prototype.push.apply(contest.groups[$scope.selected.currentVoting.group].contestants[$scope.selected.currentVoting.contestant.index].scores, $scope.scores);
+        $scope.scoresSubmitted = true;
+      });
     };
 
   });

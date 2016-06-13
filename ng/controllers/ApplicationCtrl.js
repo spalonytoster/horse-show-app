@@ -66,7 +66,8 @@ angular.module('App')
         $scope.changeGroup($scope.selectedGroupInput);
         console.log($scope.selected);
 
-        if ($scope.selected.currentVoting.contestant) {
+        if ($scope.selected.currentVoting && $scope.selected.currentVoting.contestant &&
+            $scope.selected.currentVoting.contestant.horse) {
           HorseSvc.getOne($scope.selected.currentVoting.contestant.horse)
           .success(function (horse) {
             $scope.selected.currentVoting.contestant.horse = horse;
@@ -110,11 +111,18 @@ angular.module('App')
 
     // Socket.io listeners
 
-    socketio.on('main:startContest', function (nameFormatted) {
+    socketio.on('main:startContest', function (data) {
       console.log('contest started');
-      $scope.updateContest(nameFormatted, function (contest) {
+      $scope.updateContest(data.nameFormatted, function (contest) {
         contest.liveNow = true;
+        contest.currentVoting.timeLeft = data.timeLeft;
       });
+      HorseSvc.getOne(data.contestant.horse)
+      .success(function (horse) {
+        $scope.selected.currentVoting.contestant.horse = horse;
+        $scope.$broadcast('contest-loaded');
+      });
+      $scope.$broadcast('refresh-timer');
     });
 
     socketio.on('main:endContest', function (nameFormatted) {
@@ -174,6 +182,7 @@ angular.module('App')
           contest.currentVoting.contestant.horse = data.contestant.horse;
         });
       }
+      $scope.$broadcast('next-contestant');
     });
 
     // Retrieving contests list on application start

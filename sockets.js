@@ -4,7 +4,8 @@
 var jwt = require('jwt-simple'),
     config = require('./config'),
     Person = require('./models/person.js'),
-    Contest = require('./models/contest.js');
+    Contest = require('./models/contest.js'),
+    _ = require('lodash');
 var timer, VOTING_TIME = 10;
 
 var authenticateClient = function(token, socket, callback) {
@@ -44,6 +45,49 @@ var authenticateClient = function(token, socket, callback) {
   }
 };
 
+var nextContestant = function (io, contest) {
+  if (typeof contest.currentVoting.contestant.index === 'undefined') {
+    contest.currentVoting.contestant.index = 0;
+  }
+  else if (contest.currentVoting.contestant.index+1 ===
+    contest.groups[contest.currentVoting.group].contestants.length) {
+      contest.currentVoting.contestant.index = 0;
+      if (contest.currentVoting.group+1 === contest.groups.length) {
+        io.of('/main').emit('main:nextContestant', { noMoreContestants: true });
+        return;
+      }
+      contest.currentVoting.group++;
+  }
+  else {
+    contest.currentVoting.contestant.index++;
+  }
+  console.log('contestant.index:' + contest.currentVoting.contestant.index);
+  var contestantToRet = contest.groups[contest.currentVoting.group].contestants[contest.currentVoting.contestant.index];
+  contest.currentVoting.contestant.horse = contestantToRet.horse;
+  contest.currentVoting.contestant.number = contestantToRet.number;
+  contest.groups.forEach(function(group) {
+    if (group.name === contest.currentVoting.group.name) {
+      group.refrees.forEach(function(refree) {
+        config.scoreTypes.forEach(function(scoreType) {
+          contest.currentVoting.scores.push({
+            type: scoreType,
+            value: 0,
+            refree: refree._id
+          });
+        });
+      });
+    }
+  });
+  contest.save(function(err) {
+    console.log('next contestant ' + contest.name);
+    io.of('/main').emit('main:nextContestant', {
+      nameFormatted: contest.nameFormatted,
+      contestant: contestantToRet,
+      contestantIndex: contest.currentVoting.contestant.index
+    });
+  });
+};
+
 exports.ensureToken = function(socket, next) {
   var token, auth;
   if (!socket.handshake.query.token) {
@@ -74,9 +118,31 @@ exports.init = function(io) {
                     contest.currentVoting = {};
                   }
                   contest.currentVoting.group = 0;
+                  contest.currentVoting.timeLeft = VOTING_TIME;
+                  contest.currentVoting.contestant.horse = contest.groups[0].contestants[0].horse;
+
+                  contest.groups[contest.currentVoting.group].refrees.forEach(function(refree) {
+                    config.scoreTypes.forEach(function(scoreType) {
+                      console.log(refree + ' ' + scoreType);
+                      contest.currentVoting.scores.push({
+                        scoreType: scoreType,
+                        value: 0,
+                        refree: refree
+                      });
+                    });
+                  });
+
+                  console.log(contest.currentVoting.scores);
+
                   contest.save(function(err) {
+                    if (err) { console.log(err); return; }
                     console.log('admin started ' + contest.name);
-                    io.of('/main').emit('main:startContest', contest.nameFormatted);
+                    var result = {
+                      nameFormatted: contest.nameFormatted,
+                      timeLeft: contest.currentVoting.timeLeft,
+                      contestant: contest.currentVoting.contestant
+                    };
+                    io.of('/main').emit('main:startContest', result);
                   });
                 });
               }
@@ -91,7 +157,7 @@ exports.init = function(io) {
                   contest.hasEnded = true;
                   contest.save(function(err) {
                     console.log('admin paused ' + contest.name);
-                    io.of('/main').emit('main:pauseContest', contest.nameFormatted);
+                    io.of('/main').emit('main:endContest', contest.nameFormatted);
                   });
                 });
               }
@@ -130,7 +196,7 @@ exports.init = function(io) {
                   if (err) {
                     return;
                   }
-                  // contest.currentVoting.votingStarted = true;
+                  contest.currentVoting.votingStarted = true;
                   contest.save(function(err) {
                     console.log('admin started voting ' + contest.name);
                     io.of('/main').emit('main:votingStarted', contest.nameFormatted);
@@ -167,51 +233,13 @@ exports.init = function(io) {
                   if (err) {
                     return;
                   }
-                  if (typeof contest.currentVoting.contestant.index === 'undefined') {
-                    contest.currentVoting.contestant.index = 0;
-                  }
-                  else if (contest.currentVoting.contestant.index+1 ===
-                    contest.groups[contest.currentVoting.group].contestants.length) {
-                      contest.currentVoting.contestant.index = 0;
-                      if (contest.currentVoting.group+1 === contest.groups.length) {
-                        io.of('/main').emit('main:nextContestant', { noMoreContestants: true });
-                        return;
-                      }
-                      contest.currentVoting.group++;
-                  }
-                  else {
-                    contest.currentVoting.contestant.index++;
-                  }
-                  console.log('contestant.index:' + contest.currentVoting.contestant.index);
-                  var contestantToRet = contest.groups[contest.currentVoting.group].contestants[contest.currentVoting.contestant.index];
-                  contest.currentVoting.contestant.horse = contestantToRet.horse;
-                  contest.currentVoting.contestant.number = contestantToRet.number;
-                  contest.groups.forEach(function(group) {
-                    if (group.name === contest.currentVoting.group.name) {
-                      group.refrees.forEach(function(refree) {
-                        config.scoreTypes.forEach(function(scoreType) {
-                          contest.currentVoting.scores.push({
-                            type: scoreType,
-                            value: 0,
-                            refree: refree._id
-                          });
-                        });
-                      });
-                    }
-                  });
-                  contest.save(function(err) {
-                    console.log('next contestant ' + contest.name);
-                    io.of('/main').emit('main:nextContestant', {
-                      nameFormatted: contest.nameFormatted,
-                      contestant: contestantToRet,
-                      contestantIndex: contest.currentVoting.contestant.index
-                    });
-                  });
+                  nextContestant(io, contest);
                 });
               }
             });
             socket.on('main:startTimer', function(data) {
               if (auth.isAdmin()) {
+                data.votingTime = VOTING_TIME;
                 io.of('/main').emit('main:startTimer', data);
                 Contest.findById(data._id, function (err, contest) {
                   contest.currentVoting.timeLeft = VOTING_TIME;
@@ -222,6 +250,9 @@ exports.init = function(io) {
                     }
                     else {
                         clearInterval(timer);
+                        contest.currentVoting.votingStarted = false;
+                        contest.save();
+                        io.of('/main').emit('main:votingEnded', contest.nameFormatted);
                     }
                   }, 1000);
                 });
@@ -235,6 +266,40 @@ exports.init = function(io) {
             socket.on('main:resetTimer', function(data) {
               if (auth.isAdmin()) {
                 io.of('/main').emit('main:resetTimer', data);
+              }
+            });
+            socket.on('main:updateScores', function(data) {
+              if (auth.isRefree()) {
+                Contest.findById(data._id, function (err, contest) {
+                  Person.findOne({ username: auth.username }, function (err, person) {
+                    var refreeId = person._id;
+                    var scores = _.filter(contest.currentVoting.scores, { refree: refreeId });
+
+                    console.log('before:');
+                    console.log(scores);
+
+                    scores.forEach(function (score) {
+                      switch (score.scoreType) {
+                        case 'type': score.value = data.scores.type;
+                        break;
+                        case 'neck': score.value = data.scores.neck;
+                        break;
+                        case 'body': score.value = data.scores.body;
+                        break;
+                        case 'legs': score.value = data.scores.legs;
+                        break;
+                        case 'movement': score.value = data.scores.movement;
+                        break;
+                        default:
+                      }
+                    });
+
+                    console.log('\nafter:');
+                    console.log(scores);
+                    contest.save();
+                    io.of('/main').emit('main:updateScores', {  });
+                  });
+                });
               }
             });
           });
