@@ -3,6 +3,15 @@ var router = require('express').Router(),
     Horse = require('../../models/horse'),
     Person = require('../../models/person');
 
+router.get('/:id', function (req, res, next) {
+  Horse.findById(req.params.id)
+  .populate('breeder')
+  .exec(function (err, horses) {
+    if (err) { return next(err); }
+    res.json(horses);
+  });
+});
+
 router.get('/', function (req, res, next) {
   Horse.find()
   .populate('breeder')

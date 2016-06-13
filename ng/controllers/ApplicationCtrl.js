@@ -1,6 +1,6 @@
 angular.module('App')
   .controller('ApplicationCtrl', function ($scope, $rootScope, $mdSidenav,
-                                           $http, $location, LoginSvc,
+                                           $http, $location, LoginSvc, HorseSvc,
                                            ContestSvc, socketio, $timeout) {
 
     $scope.toggleSidebar = function () {
@@ -38,6 +38,9 @@ angular.module('App')
     };
 
     $scope.getAverageScore = function (scores) {
+      if (!scores) {
+        return 0;
+      }
       var avgScore = 0;
       scores.forEach(function (score) {
         avgScore += score.value;
@@ -63,6 +66,10 @@ angular.module('App')
         $scope.changeGroup($scope.selectedGroupInput);
         console.log($scope.selected);
 
+        HorseSvc.getOne($scope.selected.currentVoting.contestant.horse)
+        .success(function (horse) {
+          $scope.selected.currentVoting.contestant.horse = horse;
+        });
       });
     };
 
@@ -144,14 +151,26 @@ angular.module('App')
       });
     });
 
-    socketio.on('main:nextContestant', function (nameFormatted, nextContestant, nextContestantIndex) {
+    socketio.on('main:nextContestant', function (data) {
       resetTimer();
-      console.log(nextContestant);
-      $scope.updateContest(nameFormatted, function (contest) {
-        contest.currentVoting.contestant.index = nextContestantIndex;
-        contest.currentVoting.contestant.number = nextContestant.number;
-        contest.currentVoting.contestant.horse = nextContestant.horse;
-      });
+      console.log(data);
+      if (data.noMoreContestants) {
+        $scope.broadcast('no-more-contestants');
+      }
+      else {
+        $scope.updateContest(data.nameFormatted, function (contest) {
+          if (!contest.currentVoting.contestant) {
+            contest.currentVoting.contestant = {};
+          }
+          contest.currentVoting.contestant.index = data.contestantIndex;
+          contest.currentVoting.contestant.number = data.contestant.number;
+          HorseSvc.getOne(data.contestant.horse)
+          .success(function (horse) {
+            contest.currentVoting.contestant.horse = horse;
+          });
+          contest.currentVoting.contestant.horse = data.contestant.horse;
+        });
+      }
     });
 
     // Retrieving contests list on application start
@@ -161,9 +180,6 @@ angular.module('App')
       $timeout(function () {
         $scope.$broadcast('contests-loaded');
       }, 50);
-      if ($scope.contests.length > 0) {
-        $scope.setSelected($scope.contests[0]);
-      }
     });
 
   });

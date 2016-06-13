@@ -69,6 +69,9 @@ exports.init = function(io) {
                     return;
                   }
                   contest.liveNow = true;
+                  if (!contest.currentVoting) {
+                    contest.currentVoting = {};
+                  }
                   contest.currentVoting.group = 0;
                   contest.save(function(err) {
                     console.log('admin started ' + contest.name);
@@ -163,15 +166,21 @@ exports.init = function(io) {
                   if (err) {
                     return;
                   }
-                  if (typeof contest.currentVoting.contestant === 'undefined') {
-                    contest.currentVoting.contestant = {
-                      index: 0
-                    };
-                    console.log('created contest.currentVoting.contestant');
+                  if (typeof contest.currentVoting.contestant.index === 'undefined') {
+                    contest.currentVoting.contestant.index = 0;
+                  }
+                  else if (contest.currentVoting.contestant.index+1 ===
+                    contest.groups[contest.currentVoting.group].contestants.length) {
+                      contest.currentVoting.contestant.index = 0;
+                      if (contest.currentVoting.group+1 === contest.groups.length) {
+                        io.of('/main').emit('main:startTimer', { noMoreContestants: true });
+                      }
+                      contest.currentVoting.group++;
                   }
                   else {
                     contest.currentVoting.contestant.index++;
                   }
+                  console.log('contestant.index:' + contest.currentVoting.contestant.index);
                   var contestantToRet = contest.groups[contest.currentVoting.group].contestants[contest.currentVoting.contestant.index];
                   contest.currentVoting.contestant.horse = contestantToRet.horse;
                   contest.currentVoting.contestant.number = contestantToRet.number;
@@ -190,7 +199,11 @@ exports.init = function(io) {
                   });
                   contest.save(function(err) {
                     console.log('next contestant ' + contest.name);
-                    io.of('/main').emit('main:nextContestant', contest.nameFormatted, contestantToRet, contest.currentVoting.contestant.index);
+                    io.of('/main').emit('main:nextContestant', {
+                      nameFormatted: contest.nameFormatted,
+                      contestant: contestantToRet,
+                      contestantIndex: contest.currentVoting.contestant.index
+                    });
                   });
                 });
               }

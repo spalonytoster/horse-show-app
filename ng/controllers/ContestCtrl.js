@@ -43,4 +43,8 @@ angular.module('App')
       stopTimer(); // Make sure that the interval is destroyed
     });
 
+    $scope.$on('no-more-contestants', function () {
+      // $scope.selected.
+    });
+
   });

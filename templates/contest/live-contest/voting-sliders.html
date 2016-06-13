@@ -3,6 +3,7 @@
     <span flex="10" class="md-button">Type</span>
     <md-slider flex="80" class="md-primary" md-discrete
               ng-change="sendScores()" ng-model="scores.type"
+              ng-disabled="!selected.currentVoting.votingStarted"
               step="{{selected.format.halvesAllowed ? 0.5 : 1}}"
               min="{{selected.format.min}}"
               max="{{selected.format.max}}"
@@ -14,6 +15,7 @@
     <span flex="10" class="md-button">Neck</span>
     <md-slider flex="80" class="md-primary" md-discrete
               ng-change="sendScores()" ng-model="scores.neck"
+              ng-disabled="!selected.currentVoting.votingStarted"
               step="{{selected.format.halvesAllowed ? 0.5 : 1}}"
               min="{{selected.format.min}}"
               max="{{selected.format.max}}"
@@ -25,6 +27,7 @@
     <span flex="10" class="md-button">Body</span>
     <md-slider flex="80" class="md-primary" md-discrete
               ng-change="sendScores()" ng-model="scores.body"
+              ng-disabled="!selected.currentVoting.votingStarted"
               step="{{selected.format.halvesAllowed ? 0.5 : 1}}"
               min="{{selected.format.min}}"
               max="{{selected.format.max}}"
@@ -36,6 +39,7 @@
     <span flex="10" class="md-button">Legs</span>
     <md-slider flex="80" class="md-primary" md-discrete
               ng-change="sendScores()" ng-model="scores.legs"
+              ng-disabled="!selected.currentVoting.votingStarted"
               step="{{selected.format.halvesAllowed ? 0.5 : 1}}"
               min="{{selected.format.min}}"
               max="{{selected.format.max}}"
@@ -47,6 +51,7 @@
     <span flex="10" class="md-button">Movement</span>
     <md-slider flex="80" class="md-primary" md-discrete
               ng-change="sendScores()" ng-model="scores.movement"
+              ng-disabled="!selected.currentVoting.votingStarted"
               step="{{selected.format.halvesAllowed ? 0.5 : 1}}"
               min="{{selected.format.min}}"
               max="{{selected.format.max}}"

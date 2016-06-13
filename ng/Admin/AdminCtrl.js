@@ -2,6 +2,9 @@ angular.module('App.Admin')
   .controller('AdminCtrl', function ($scope, $interval, ContestSvc, socketio) {
 
     $scope.actions = [{
+      label: 'welcome page',
+      template: 'admin/welcome-page.html'
+    }, {
       label: 'create contest',
       template: 'admin/create-contest/create-contest.html'
     }, {
@@ -18,7 +21,12 @@ angular.module('App.Admin')
     $scope.$on('contests-loaded', function () {
       console.log('admin: contests-loaded');
       $scope.contests = _.filter($scope.contests, { hasEnded: false });
-      $scope.setSelected($scope.contests[0]);
+      if ($scope.contests.length > 0) {
+        $scope.setSelected($scope.contests[0]);
+      }
+      else {
+        $scope.setSelected($scope.actions[0]);
+      }
     });
 
     // Socket.io events firing
