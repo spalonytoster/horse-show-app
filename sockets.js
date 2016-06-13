@@ -78,6 +78,9 @@ var nextContestant = function (io, contest) {
       });
     }
   });
+  contest.currentVoting.scores.forEach(function (score) {
+    score.value = 0;
+  });
   contest.save(function(err) {
     console.log('next contestant ' + contest.name);
     io.of('/main').emit('main:nextContestant', {
@@ -113,7 +116,7 @@ exports.init = function(io) {
                   if (err) {
                     return;
                   }
-                  contest.currentVoting.refreesSubmitted.push({ contest: contest._id, value: 0 });
+                  contest.currentVoting.refreesSubmitted.push({ contest: contest._id, value: 0, refrees: [] });
                   contest.liveNow = true;
                   if (!contest.currentVoting) {
                     contest.currentVoting = {};
@@ -233,8 +236,9 @@ exports.init = function(io) {
                   if (err) {
                     return;
                   }
-                  _.find(contest.currentVoting.refreesSubmitted, { contest: contest._id })
-                  .value = 0;
+                  var refreesSubmitted = _.find(contest.currentVoting.refreesSubmitted, { contest: contest._id });
+                  refreesSubmitted.value = 0;
+                  refreesSubmitted.refrees = [];
                   nextContestant(io, contest);
                 });
               }
@@ -292,7 +296,6 @@ exports.init = function(io) {
                         default:
                       }
                     });
-
                     contest.save();
                   });
                 });
@@ -312,6 +315,7 @@ exports.init = function(io) {
                   Person.findOne({ username: auth.username }, function (err, person) {
                     var refreeId = person._id;
                     var scores = _.filter(contest.currentVoting.scores, { refree: refreeId });
+                    refreesSubmitted.refrees.push(refreeId);
                     Array.prototype.push.apply(contest.groups[contest.currentVoting.group].contestants[contest.currentVoting.contestant.index].scores, scores);
                     contest.save();
                     io.of('/main').emit('main:updateScores', { nameFormatted: contest.nameFormatted, scores: scores });

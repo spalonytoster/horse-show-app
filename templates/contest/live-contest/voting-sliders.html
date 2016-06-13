@@ -60,6 +60,6 @@
     <span flex="10" class="md-button">{{ scores.movement }}/{{ selected.format.max }}</span>
   </div>
   <div flex layout="row" layout-align="center none">
-    <md-button class="md-raised md-primary" ng-click="finalizeScores()">submit</md-button>
+    <md-button class="md-raised md-primary" ng-disabled="scoresSubmitted" ng-click="finalizeScores()">submit</md-button>
   </div>
 </div>

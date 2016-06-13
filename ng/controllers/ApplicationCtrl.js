@@ -187,14 +187,10 @@ angular.module('App')
     });
 
     socketio.on('main:updateScores', function (data) {
+      $scope.allVotesCollected = true;
       $scope.updateContest(data.nameFormatted, function (contest) {
         Array.prototype.push.apply(contest.groups[contest.currentVoting.group].contestants[contest.currentVoting.contestant.index].scores, data.scores);
       });
-    });
-
-    socketio.on('main:updateScores', function () {
-      $scope.allVotesCollected = true;
-      // TODO update scoretables
     });
 
     // Retrieving contests list on application start

@@ -29,7 +29,8 @@ var currentVotingSchema = db.Schema({
   scores: [scoreSchema],
   refreesSubmitted: [{
     contest: { type: db.Schema.ObjectId, ref: 'Contest' },
-    value: Number
+    value: Number,
+    refrees: [{ type: db.Schema.ObjectId, ref: 'Person' }]
   }]
 });
 

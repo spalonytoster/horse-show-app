@@ -28,6 +28,8 @@ angular.module('App')
           default:
         }
       });
+
+
     });
 
     $scope.$on('next-contestant', function () {
