@@ -18,13 +18,15 @@ angular.module('App')
       page: 1
     };
 
-    $scope.data = {};
+    $scope.data = {
+
+    };
 
     $scope.$on('contest-loaded', function () {
-      var groupIndex = $selected.currentVoting.group,
-          contestantIndex = $selected.currentVoting.contestant.index;
-      $selected.groups[groupIndex].contestants[contestantIndex].scores.forEach(function (score) {
-        
+      var groupIndex = $scope.selected.currentVoting.group,
+          contestantIndex = $scope.selected.currentVoting.contestant.index;
+      $scope.selected.groups[groupIndex].contestants[contestantIndex].scores.forEach(function (score) {
+
       });
     });
 

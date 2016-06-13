@@ -317,7 +317,12 @@ exports.init = function(io) {
                     var scores = _.filter(contest.currentVoting.scores, { refree: refreeId });
                     refreesSubmitted.refrees.push(refreeId);
                     Array.prototype.push.apply(contest.groups[contest.currentVoting.group].contestants[contest.currentVoting.contestant.index].scores, scores);
-                    contest.save();
+                    contest.save(function (err, contest) {
+                      console.log('contest.currentVoting.group: ' + contest.currentVoting.group);
+                      console.log('contest.currentVoting.contestant.index: ' + contest.currentVoting.contestant.index);
+                      console.log('contest.groups[contest.currentVoting.group].contestants[contest.currentVoting.contestant.index].scores after save:');
+                      console.log(contest.groups[contest.currentVoting.group].contestants[contest.currentVoting.contestant.index].scores);
+                    });
                     io.of('/main').emit('main:updateScores', { nameFormatted: contest.nameFormatted, scores: scores });
                   });
                 });
