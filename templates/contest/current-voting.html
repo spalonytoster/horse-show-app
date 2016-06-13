@@ -1,8 +1,8 @@
-<div id="current-voting" layout="column">
+<div ng-hide="currentUser.role !== 'admin' && noMoreContestants || selected.hasEnded" id="current-voting" layout="column">
   <div flex="60" layout="row">
     <div flex="20" layout="column" layout-align="center center">
       <div layout="column" layout-align="center center" ng-hide="costam">
-        <h4>{{ selected.groups[selected.currentVoting.group].name }}</h4>
+        <h4>{{ selected.groups[selected.currentVoting.group].name.toUpperCase() }}</h4>
         <h1>Score: {{ getAverageScore(selected.currentVoting.scores) || 'N/A' }}</h1>
         <h2>Place: N/A</h2>
       </div>
@@ -45,6 +45,11 @@
       <div ng-if="currentUser.role === 'admin' && selected.liveNow" flex="20" lavout="row" layout-align="center none" layout-padding>
         <md-button class="md-raised md-warn" ng-click="endContest()">end contest</md-button>
       </div>
+      <div ng-if="currentUser.role === 'refree' && hurryUp" flex="20" lavout="row" layout-align="center none" layout-padding>
+        <h2 class="md-button md-warn">
+          HURRY UP!
+        </h2>
+      </div>
     </div>
   </div>
   <div flex="40" layout="column" layout-align="center none">
@@ -55,4 +60,10 @@
       <ng-include src="'contest/live-contest/voting-sliders.html'"></ng-include>
     </div>
   </div>
+</div>
+<div ng-if="currentUser.role !== 'admin' && noMoreContestants && !hasEnded">
+  <ng-include src="'contest/live-contest/no-more-contestants.html'"></ng-include>
+</div>
+<div ng-if="currentUser.role !== 'admin' && noMoreContestants && hasEnded">
+  <ng-include src="'contest/live-contest/contest-ended.html'"></ng-include>
 </div>

@@ -66,10 +66,13 @@ angular.module('App')
         $scope.changeGroup($scope.selectedGroupInput);
         console.log($scope.selected);
 
-        HorseSvc.getOne($scope.selected.currentVoting.contestant.horse)
-        .success(function (horse) {
-          $scope.selected.currentVoting.contestant.horse = horse;
-        });
+        if ($scope.selected.currentVoting.contestant) {
+          HorseSvc.getOne($scope.selected.currentVoting.contestant.horse)
+          .success(function (horse) {
+            $scope.selected.currentVoting.contestant.horse = horse;
+            $scope.$broadcast('contest-loaded');
+          });
+        }
       });
     };
 
@@ -155,7 +158,7 @@ angular.module('App')
       resetTimer();
       console.log(data);
       if (data.noMoreContestants) {
-        $scope.broadcast('no-more-contestants');
+        $scope.$broadcast('no-more-contestants');
       }
       else {
         $scope.updateContest(data.nameFormatted, function (contest) {

@@ -2,9 +2,10 @@
 "use strict";
 
 var jwt = require('jwt-simple'),
-  config = require('./config'),
-  Person = require('./models/person.js'),
-  Contest = require('./models/contest.js');
+    config = require('./config'),
+    Person = require('./models/person.js'),
+    Contest = require('./models/contest.js');
+var timer, VOTING_TIME = 10;
 
 var authenticateClient = function(token, socket, callback) {
   var auth;
@@ -173,7 +174,8 @@ exports.init = function(io) {
                     contest.groups[contest.currentVoting.group].contestants.length) {
                       contest.currentVoting.contestant.index = 0;
                       if (contest.currentVoting.group+1 === contest.groups.length) {
-                        io.of('/main').emit('main:startTimer', { noMoreContestants: true });
+                        io.of('/main').emit('main:nextContestant', { noMoreContestants: true });
+                        return;
                       }
                       contest.currentVoting.group++;
                   }
@@ -211,6 +213,18 @@ exports.init = function(io) {
             socket.on('main:startTimer', function(data) {
               if (auth.isAdmin()) {
                 io.of('/main').emit('main:startTimer', data);
+                Contest.findById(data._id, function (err, contest) {
+                  contest.currentVoting.timeLeft = VOTING_TIME;
+                  timer = setInterval(function () {
+                    if (contest.currentVoting.timeLeft > 0) {
+                      contest.currentVoting.timeLeft--;
+                      contest.save();
+                    }
+                    else {
+                        clearInterval(timer);
+                    }
+                  }, 1000);
+                });
               }
             });
             socket.on('main:stopTimer', function(data) {

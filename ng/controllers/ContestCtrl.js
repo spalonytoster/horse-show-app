@@ -3,7 +3,10 @@ angular.module('App')
 
     var VOTING_TIME = 10;
 
-    $scope.timeLeft = VOTING_TIME;
+    $scope.$on('contest-loaded', function () {
+      $scope.timeLeft = $scope.selected.currentVoting.timeLeft;
+      startTimer();
+    });
     $scope.timesUp = false;
     $scope.allVotesCollected = false;
 
@@ -18,7 +21,7 @@ angular.module('App')
       }
     };
 
-    $scope.$on('start-timer', function () {
+    var startTimer = function () {
       // won't start a new timer if there is one existing
       console.log('timer started');
       if (angular.isDefined(stop)) return;
@@ -31,7 +34,9 @@ angular.module('App')
           $scope.timesUp = true;
         }
       }, 1000);
-    });
+    };
+
+    $scope.$on('start-timer', startTimer);
 
     $scope.$on('stop-timer', stopTimer);
 
@@ -44,7 +49,8 @@ angular.module('App')
     });
 
     $scope.$on('no-more-contestants', function () {
-      // $scope.selected.
+      $scope.noMoreContestants = true;
+      console.log('nie ma wincyj');
     });
 
   });

@@ -41,22 +41,22 @@ angular.module('App.Admin')
     };
 
     $scope.endContest = function () {
-      socketio.emit('main:stopTimer', { _id: $scope.selected.nameFormatted });
+      socketio.emit('main:stopTimer', { _id: $scope.selected._id });
       socketio.emit('main:endContest', { _id: $scope.selected._id });
     };
 
     $scope.pauseContest = function () {
-      socketio.emit('main:stopTimer', { _id: $scope.selected.nameFormatted });
+      socketio.emit('main:stopTimer', { _id: $scope.selected._id });
       socketio.emit('main:pauseContest', { _id: $scope.selected._id });
     };
 
     $scope.resumeContest = function () {
-      socketio.emit('main:startTimer', { _id: $scope.selected.nameFormatted });
+      socketio.emit('main:startTimer', { _id: $scope.selected._id });
       socketio.emit('main:resumeContest', { _id: $scope.selected._id });
     };
 
     $scope.votingStarted = function () {
-      socketio.emit('main:startTimer', { _id: $scope.selected.nameFormatted });
+      socketio.emit('main:startTimer', { _id: $scope.selected._id });
       socketio.emit('main:votingStarted', { _id: $scope.selected._id });
     };
 
@@ -69,7 +69,11 @@ angular.module('App.Admin')
     };
 
     $scope.nextContestant = function () {
-      socketio.emit('main:resetTimer', { _id: $scope.selected.nameFormatted });
+      $scope.allScoresCollected = $scope.selected.currentVoting.scores.length === ($scope.selected.groups[$scope.selected.currentVoting.group].refrees.length * 5);
+      if (!$scope.allScoresCollected) {
+        return;
+      }
+      socketio.emit('main:resetTimer', { _id: $scope.selected._id });
       socketio.emit('main:nextContestant', { _id: $scope.selected._id });
     };
 

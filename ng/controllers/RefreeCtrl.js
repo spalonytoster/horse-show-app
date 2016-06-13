@@ -18,9 +18,16 @@ angular.module('App')
       $scope.setSelected($scope.contests[0]);
     });
 
+    socketio.on('main:nextContestant', function (nameFormatted) {
+      if ($scope.selected.nameFormatted === nameFormatted) {
+        $scope.hurryUp = false;
+      }
+    });
+
     socketio.on('main:alertRefrees', function (nameFormatted) {
       if ($scope.selected.nameFormatted === nameFormatted) {
         console.log('HURRY UP REFREE!');
+        $scope.hurryUp = true;
       }
     });
 
