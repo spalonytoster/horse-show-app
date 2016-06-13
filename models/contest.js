@@ -26,7 +26,11 @@ var currentVotingSchema = db.Schema({
   votingStarted: { type: Boolean, default: false },
   isPaused: { type: Boolean, default: false },
   timeLeft: Number,
-  scores: [scoreSchema]
+  scores: [scoreSchema],
+  refreesSubmitted: [{
+    contest: { type: db.Schema.ObjectId, ref: 'Contest' },
+    value: Number
+  }]
 });
 
 var contestSchema = db.Schema({

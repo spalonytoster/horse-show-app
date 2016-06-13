@@ -69,8 +69,8 @@ angular.module('App.Admin')
     };
 
     $scope.nextContestant = function () {
-      $scope.allScoresCollected = $scope.selected.currentVoting.scores.length === ($scope.selected.groups[$scope.selected.currentVoting.group].refrees.length * 5);
-      if (!$scope.allScoresCollected) {
+      if (!$scope.allVotesCollected) {
+        console.log('votes have not been collected yet');
         return;
       }
       socketio.emit('main:resetTimer', { _id: $scope.selected._id });

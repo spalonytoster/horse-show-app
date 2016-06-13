@@ -113,6 +113,7 @@ exports.init = function(io) {
                   if (err) {
                     return;
                   }
+                  contest.currentVoting.refreesSubmitted.push({ contest: contest._id, value: 0 });
                   contest.liveNow = true;
                   if (!contest.currentVoting) {
                     contest.currentVoting = {};
@@ -123,7 +124,6 @@ exports.init = function(io) {
 
                   contest.groups[contest.currentVoting.group].refrees.forEach(function(refree) {
                     config.scoreTypes.forEach(function(scoreType) {
-                      console.log(refree + ' ' + scoreType);
                       contest.currentVoting.scores.push({
                         scoreType: scoreType,
                         value: 0,
@@ -233,6 +233,8 @@ exports.init = function(io) {
                   if (err) {
                     return;
                   }
+                  _.find(contest.currentVoting.refreesSubmitted, { contest: contest._id })
+                  .value = 0;
                   nextContestant(io, contest);
                 });
               }
@@ -300,6 +302,13 @@ exports.init = function(io) {
             socket.on('main:broadcastRefreeScores', function(data) {
               if (auth.isRefree()) {
                 Contest.findById(data._id, function (err, contest) {
+                  console.log(contest.currentVoting.refreesSubmitted);
+                  var refreesSubmitted = _.find(contest.currentVoting.refreesSubmitted, { contest: contest._id });
+                  refreesSubmitted.value++;
+                  if (refreesSubmitted.value >= contest.groups[contest.currentVoting.group].refrees.length) {
+                    console.log('all refrees submitted their votes');
+                    io.of('/main').emit('main:allVotesCollected', { nameFormatted: contest.nameFormatted });
+                  }
                   Person.findOne({ username: auth.username }, function (err, person) {
                     var refreeId = person._id;
                     var scores = _.filter(contest.currentVoting.scores, { refree: refreeId });

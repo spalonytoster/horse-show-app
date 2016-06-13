@@ -32,6 +32,13 @@ angular.module('App')
 
     $scope.$on('next-contestant', function () {
       $scope.scoresSubmitted = false;
+      $scope.scores = {
+        type: 0,
+        neck: 0,
+        body: 0,
+        legs: 0,
+        movement: 0
+      };
     });
 
     $scope.sendScores = function () {
@@ -56,7 +63,7 @@ angular.module('App')
       });
 
       socketio.emit('main:updateScores', { _id: $scope.selected._id, scores: $scope.scores });
-      console.log($scope.selected.currentVoting.scores);
+      console.log($scope.scores);
     };
 
     $scope.finalizeScores = function () {
