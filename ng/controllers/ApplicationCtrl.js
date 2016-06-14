@@ -174,6 +174,7 @@ angular.module('App')
           if (!contest.currentVoting.contestant) {
             contest.currentVoting.contestant = {};
           }
+          contest.currentVoting.scores = {};
           contest.currentVoting.contestant.index = data.contestantIndex;
           contest.currentVoting.contestant.number = data.contestant.number;
           HorseSvc.getOne(data.contestant.horse)

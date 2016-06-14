@@ -10,6 +10,7 @@ angular.module('App')
     };
 
     $scope.$on('contest-loaded', function () {
+      console.log('contest-loaded');
       _.filter($scope.selected.currentVoting.scores, function (score) {
         return score.refree === $scope.currentUser._id;
       })

@@ -24,21 +24,6 @@
   </md-sidenav>
 
   <md-content flex id="content">
-    <md-content>
-      <md-tabs md-dynamic-height md-border-bottom>
-        <div ng-if="selected.liveNow">
-          <md-tab label="current voting">
-            <md-content class="md-padding">
-              <ng-include src="'contest/current-voting.html'"></ng-include>
-            </md-content>
-          </md-tab>
-        </div>
-        <md-tab label="score table">
-          <md-content class="md-padding">
-            <ng-include src="'contest/score-table.html'"></ng-include>
-          </md-content>
-        </md-tab>
-      </md-tabs>
-    </md-content>
+    <ng-include src="'contest/live-contest/live-contest.html'"></ng-include>
   </md-content>
 </div>

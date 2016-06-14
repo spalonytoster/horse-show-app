@@ -1,6 +1,6 @@
 <div ng-controller="ContestCtrl">
   <md-tabs md-dynamic-height md-border-bottom>
-    <md-tab label="current voting">
+    <md-tab ng-if="selected.liveNow" label="current voting">
       <md-content class="md-padding">
         <ng-include src="'contest/current-voting.html'"></ng-include>
       </md-content>

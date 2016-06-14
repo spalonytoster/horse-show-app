@@ -124,6 +124,7 @@ exports.init = function(io) {
                   contest.currentVoting.group = 0;
                   contest.currentVoting.timeLeft = VOTING_TIME;
                   contest.currentVoting.contestant.horse = contest.groups[0].contestants[0].horse;
+                  contest.currentVoting.contestant.number = contest.groups[0].contestants[0].number;
 
                   contest.groups[contest.currentVoting.group].refrees.forEach(function(refree) {
                     config.scoreTypes.forEach(function(scoreType) {
@@ -317,11 +318,13 @@ exports.init = function(io) {
                     var scores = _.filter(contest.currentVoting.scores, { refree: refreeId });
                     refreesSubmitted.refrees.push(refreeId);
                     Array.prototype.push.apply(contest.groups[contest.currentVoting.group].contestants[contest.currentVoting.contestant.index].scores, scores);
-                    contest.save(function (err, contest) {
-                      console.log('contest.currentVoting.group: ' + contest.currentVoting.group);
-                      console.log('contest.currentVoting.contestant.index: ' + contest.currentVoting.contestant.index);
-                      console.log('contest.groups[contest.currentVoting.group].contestants[contest.currentVoting.contestant.index].scores after save:');
-                      console.log(contest.groups[contest.currentVoting.group].contestants[contest.currentVoting.contestant.index].scores);
+                    contest.save(function (err, savedContest) {
+                      if (err) { console.log(err); }
+                      console.log('savedContest.currentVoting.group: ' + savedContest.currentVoting.group);
+                      console.log('contest.currentVoting.contestant.index: ' + savedContest.currentVoting.contestant.index);
+                      console.log('savedContest.groups[contest.currentVoting.group].contestants[contest.currentVoting.contestant.index].scores after save:');
+                      console.log(savedContest.groups[savedContest.currentVoting.group].contestants[savedContest.currentVoting.contestant.index].scores);
+                      console.log(JSON.stringify(savedContest.groups[0].contestants, null, 2));
                     });
                     io.of('/main').emit('main:updateScores', { nameFormatted: contest.nameFormatted, scores: scores });
                   });
